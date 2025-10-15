@@ -1,4 +1,4 @@
-# evenntz Frontend
+# eventz Frontend
 
 ## Wallet Integration with RainbowKit
 
@@ -62,3 +62,7 @@ If you encounter wallet connection issues:
 3. Try refreshing the page
 4. Check browser console for errors
 5. Verify your wallet is unlocked and on the correct network
+
+### Contribution Guide
+
+All changes and commit should be push to the dev branch which will be reviewed and merge to the main branch
