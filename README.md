@@ -1,69 +1,64 @@
-# React + TypeScript + Vite
+# evenntz Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Wallet Integration with RainbowKit
 
-Currently, two official plugins are available:
+This frontend now uses RainbowKit for seamless wallet connection and authentication.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Environment Variables
 
-## Expanding the ESLint configuration
+Create a `.env.local` file in the frontend directory with the following variables:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# WalletConnect Project ID (get from https://cloud.walletconnect.com/)
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Enable testnet chains
+NEXT_PUBLIC_ENABLE_TESTNETS=true
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+# API URL
+NEXT_PUBLIC_API_URL=
+https://evenntz.onrender.com/api
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Getting WalletConnect Project ID
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Go to [WalletConnect Cloud](https://cloud.walletconnect.com/)
+2. Sign up or sign in
+3. Create a new project
+4. Copy the Project ID
+5. Paste it in your `.env.local` file
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Features
+
+- **Wallet Connection**: Connect MetaMask, WalletConnect, and other popular wallets
+- **Wallet-based Authentication**: Sign in using your connected wallet
+- **Email Authentication**: Traditional email/password signin still supported
+- **Multi-chain Support**: Works with Ethereum mainnet, Polygon, Base, and more
+- **Responsive Design**: Works on desktop and mobile devices
+
+### Supported Wallets
+
+- MetaMask
+- WalletConnect
+- Coinbase Wallet
+- Rainbow Wallet
+- Trust Wallet
+- And many more...
+
+### Usage
+
+1. **Registration**: Connect wallet and create organization account
+2. **Sign In**: Use wallet or email/password
+3. **Dashboard**: View connected wallet address
+4. **Events**: Create and manage events with wallet authentication
+
+### Troubleshooting
+
+If you encounter wallet connection issues:
+
+1. Check your `.env.local` file has the correct Project ID
+2. Ensure your browser supports Web3
+3. Try refreshing the page
+4. Check browser console for errors
+5. Verify your wallet is unlocked and on the correct network
