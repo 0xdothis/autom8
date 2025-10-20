@@ -2,27 +2,27 @@ import { getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { createConfig, http } from 'wagmi';
 import { defineChain } from 'viem';
 
-// Define Sepolia Testnet chain
-const SepoliaTestnet = defineChain({
-  id: 11155111,
-  name: 'Sepolia Testnet',
+// Define Lisk Sepolia Testnet chain
+const liskSepolia = defineChain({
+  id: 4202,
+  name: 'Lisk Sepolia Testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'Sepolia',
-    symbol: 'S',
+    name: 'Sepolia Ether',
+    symbol: 'ETH',
   },
   rpcUrls: {
     default: {
-      http: ['https://sepolia.etherscan.io'],
+      http: [process.env.NEXT_PUBLIC_RPC_URL || 'https://rpc.sepolia-api.lisk.com'],
     },
     public: {
-      http: ['https://sepolia.etherscan.io'],
+      http: ['https://rpc.sepolia-api.lisk.com'],
     },
   },
   blockExplorers: {
     default: {
-      name: 'SepoliaScan',
-      url: 'https://sepolia.etherscan.io',
+      name: 'Blockscout',
+      url: 'https://sepolia-blockscout.lisk.com',
     },
   },
   testnet: true,
@@ -35,14 +35,13 @@ const { connectors: defaultConnectors } = getDefaultWallets({
   projectId,
 });
 
-const connectors = defaultConnectors.filter((connector) => {
-  return !(connector.rdns && connector.rdns.includes('com.brave.wallet'));
-});
+// Use all default connectors
+const connectors = defaultConnectors;
 
 export const config = createConfig({
-  chains: [SepoliaTestnet],
+  chains: [liskSepolia],
   transports: {
-    [SepoliaTestnet.id]: http(),
+    [liskSepolia.id]: http(liskSepolia.rpcUrls.default.http[0]),
   },
   connectors,
   ssr: true,
@@ -53,5 +52,5 @@ export const config = createConfig({
     },
   },
   // Reduce polling frequency
-  pollingInterval: 4000, // 4 seconds instead of default 4 seconds
+  pollingInterval: 4000, // 4 seconds
 });

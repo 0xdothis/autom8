@@ -1,0 +1,58 @@
+import { Theme } from '@rainbow-me/rainbowkit';
+
+// Custom black & white theme for RainbowKit
+export const rainbowKitTheme: Theme = {
+  blurs: {
+    modalOverlay: 'blur(8px)',
+  },
+  colors: {
+    accentColor: '#000000',
+    accentColorForeground: '#FFFFFF',
+    actionButtonBorder: '#E5E5E5',
+    actionButtonBorderMobile: '#E5E5E5',
+    actionButtonSecondaryBackground: '#F5F5F5',
+    closeButton: '#737373',
+    closeButtonBackground: '#F5F5F5',
+    connectButtonBackground: '#FFFFFF',
+    connectButtonBackgroundError: '#EF4444',
+    connectButtonInnerBackground: '#F5F5F5',
+    connectButtonText: '#000000',
+    connectButtonTextError: '#FFFFFF',
+    connectionIndicator: '#10B981',
+    downloadBottomCardBackground: '#FFFFFF',
+    downloadTopCardBackground: '#F5F5F5',
+    error: '#EF4444',
+    generalBorder: '#E5E5E5',
+    generalBorderDim: '#D4D4D4',
+    menuItemBackground: '#FFFFFF',
+    modalBackdrop: 'rgba(0, 0, 0, 0.5)',
+    modalBackground: '#FFFFFF',
+    modalBorder: '#E5E5E5',
+    modalText: '#000000',
+    modalTextDim: '#737373',
+    modalTextSecondary: '#525252',
+    profileAction: '#F5F5F5',
+    profileActionHover: '#E5E5E5',
+    profileForeground: '#FFFFFF',
+    selectedOptionBorder: '#000000',
+    standby: '#F59E0B',
+  },
+  fonts: {
+    body: 'Inter, system-ui, sans-serif',
+  },
+  radii: {
+    actionButton: '8px',
+    connectButton: '8px',
+    menuButton: '8px',
+    modal: '12px',
+    modalMobile: '16px',
+  },
+  shadows: {
+    connectButton: '0 2px 8px rgba(0, 0, 0, 0.05)',
+    dialog: '0 20px 40px rgba(0, 0, 0, 0.1)',
+    profileDetailsAction: '0 2px 6px rgba(0, 0, 0, 0.05)',
+    selectedOption: '0 2px 6px rgba(0, 0, 0, 0.05)',
+    selectedWallet: '0 2px 6px rgba(0, 0, 0, 0.05)',
+    walletLogo: '0 2px 6px rgba(0, 0, 0, 0.05)',
+  },
+};
