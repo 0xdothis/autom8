@@ -207,7 +207,7 @@ export default function Dashboard() {
                           <Badge variant={getBadgeVariant()}>
                             {eventStatus}
                           </Badge>
-                          <Link to={`/events/${index}`}>
+                          <Link to={`/events/${selectedOrg}/${event.id}`}>
                             <Button variant="ghost" size="sm">
                               View
                             </Button>

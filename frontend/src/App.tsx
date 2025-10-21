@@ -42,7 +42,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/events" element={<EventsList />} />
-                <Route path="/events/:eventId" element={<EventDetails />} />
+                <Route path="/events/:proxyAddress/:eventId" element={<EventDetails />} />
                 <Route path="/tickets" element={<MyTickets />} />
                 <Route path="/create-organization" element={<CreateOrganization />} />
                 

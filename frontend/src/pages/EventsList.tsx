@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatEther } from 'viem';
+import { useReadContract } from 'wagmi';
 import Button from '../components/ui/Button';
 import { Card, CardBody } from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Input from '../components/ui/Input';
 import { useFactory } from '../hooks';
+import { eventImplementationAbi } from '@/lib/contracts';
+import { getKnownProxies } from '@/lib/contracts/known-proxies';
 
 interface EventWithOrg {
   id: bigint;
@@ -16,6 +19,7 @@ interface EventWithOrg {
   startTime: bigint;
   endTime: bigint;
   eventType: number;
+  amountNeeded: bigint;
   proxyAddress: string;
   status: 'upcoming' | 'active' | 'ended';
 }
@@ -24,27 +28,79 @@ export default function EventsList() {
   const navigate = useNavigate();
   const { userOrganizations } = useFactory();
   
-  const [allEvents] = useState<EventWithOrg[]>([]);
+  const [allEvents, setAllEvents] = useState<EventWithOrg[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'upcoming' | 'active' | 'ended'>('all');
   const [filterType, setFilterType] = useState<'all' | 'free' | 'paid'>('all');
+  
+  // Get all known proxies for public event discovery
+  // This includes both known proxies and the user's organization if they have one
+  const knownProxies = getKnownProxies();
+  const allProxiesToFetch = [
+    ...knownProxies,
+    ...(userOrganizations.length > 0 ? userOrganizations : [])
+  ];
+  // Remove duplicates
+  const uniqueProxies = [...new Set(allProxiesToFetch)].filter(addr => !!addr);
+  
+  // For now, fetch from the first available proxy (either known or user's)
+  // In production, you'd want to fetch from ALL proxies and aggregate
+  const displayOrgAddress = uniqueProxies[0];
+  
+  console.log('EventsList Debug:', {
+    knownProxies,
+    userOrganizations,
+    uniqueProxies,
+    displayOrgAddress
+  });
+  
+  // Fetch events from the organization
+  const { data: eventsData, isLoading: isLoadingEvents } = useReadContract({
+    address: displayOrgAddress,
+    abi: eventImplementationAbi,
+    functionName: 'getAllEvents',
+    query: {
+      enabled: !!displayOrgAddress,
+    },
+  });
+  
+  console.log('Events Data:', { eventsData, isLoadingEvents });
 
-  // Fetch events from all organizations
+  // Process and add status to events
   useEffect(() => {
-    const fetchAllEvents = async () => {
-      if (userOrganizations.length === 0) {
-        setIsLoading(false);
-        return;
-      }
-
-      // In a real app, you'd fetch events from all organizations
-      // For now, we'll show a demo message
+    if (eventsData && Array.isArray(eventsData)) {
+      const now = Math.floor(Date.now() / 1000);
+      
+      const processedEvents: EventWithOrg[] = eventsData.map((event: any) => {
+        let status: 'upcoming' | 'active' | 'ended' = 'upcoming';
+        if (Number(event.startTime) <= now && Number(event.endTime) > now) {
+          status = 'active';
+        } else if (Number(event.endTime) <= now) {
+          status = 'ended';
+        }
+        
+        return {
+          id: event.id,
+          name: event.name,
+          ticketPrice: event.ticketPrice,
+          maxTickets: event.maxTickets,
+          ticketsSold: event.ticketsSold,
+          startTime: event.startTime,
+          endTime: event.endTime,
+          eventType: event.eventType,
+          amountNeeded: event.amountNeeded,
+          proxyAddress: displayOrgAddress || '',
+          status,
+        };
+      });
+      
+      setAllEvents(processedEvents);
       setIsLoading(false);
-    };
-
-    fetchAllEvents();
-  }, [userOrganizations]);
+    } else if (!isLoadingEvents) {
+      setIsLoading(false);
+    }
+  }, [eventsData, displayOrgAddress, isLoadingEvents]);
 
   const getStatusBadgeVariant = (status: string) => {
     if (status === 'active') return 'success';
@@ -146,15 +202,15 @@ export default function EventsList() {
           </div>
         )}
 
-        {/* Empty State - No Organizations */}
-        {!isLoading && userOrganizations.length === 0 && (
+        {/* Empty State - No Organizations or Known Proxies */}
+        {!isLoading && uniqueProxies.length === 0 && (
           <Card>
             <CardBody>
               <div className="text-center py-16">
                 <div className="text-6xl mb-4">🎉</div>
-                <h2 className="text-2xl font-bold mb-2">No Events Available</h2>
+                <h2 className="text-2xl font-bold mb-2">No Events Available Yet</h2>
                 <p className="text-gray-600 mb-6">
-                  Create an organization to start hosting events!
+                  Be the first to create an organization and host events on the platform!
                 </p>
                 <Button onClick={() => navigate('/create-organization')}>
                   Create Organization
@@ -165,7 +221,7 @@ export default function EventsList() {
         )}
 
         {/* Empty State - No Events */}
-        {!isLoading && userOrganizations.length > 0 && filteredEvents.length === 0 && (
+        {!isLoading && uniqueProxies.length > 0 && filteredEvents.length === 0 && (
           <Card>
             <CardBody>
               <div className="text-center py-16">
@@ -174,9 +230,9 @@ export default function EventsList() {
                 <p className="text-gray-600 mb-6">
                   {searchTerm || filterStatus !== 'all' || filterType !== 'all'
                     ? 'Try adjusting your filters to see more events.'
-                    : 'Be the first to create an event!'}
+                    : 'Check back later for upcoming events!'}
                 </p>
-                {!searchTerm && filterStatus === 'all' && filterType === 'all' && (
+                {userOrganizations.length > 0 && !searchTerm && filterStatus === 'all' && filterType === 'all' && (
                   <Button onClick={() => navigate('/dashboard/events/create')}>
                     Create Event
                   </Button>

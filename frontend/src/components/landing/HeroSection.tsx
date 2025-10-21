@@ -2,9 +2,15 @@ import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { motion } from 'framer-motion';
 import Button from '../ui/Button';
+import { useFactory } from '@/hooks';
 
 export default function HeroSection() {
   const { isConnected } = useAccount();
+  const { userOrganizations } = useFactory();
+  
+  // Determine where the main CTA should go
+  const hasOrganization = userOrganizations.length > 0;
+  const mainCtaLink = isConnected && hasOrganization ? '/dashboard' : '/create-organization';
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -65,13 +71,13 @@ export default function HeroSection() {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <Link to={isConnected ? "/create-organization" : "/create-organization"}>
+            <Link to={mainCtaLink}>
               <Button variant="primary" size="lg" className="min-w-[240px] shadow-lg hover:shadow-xl transition-shadow">
                 <span className="flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  Launch Your Organization
+                  {hasOrganization ? 'Go to Dashboard' : 'Launch Your Organization'}
                 </span>
               </Button>
             </Link>

@@ -41,6 +41,19 @@ export function useFactory() {
     },
   });
 
+  // Hook to get a specific proxy from the proxiesList array
+  const useProxyAtIndex = (index: number) => {
+    return useReadContract({
+      address: factoryAddress,
+      abi: eventFactoryAbi,
+      functionName: 'proxiesList',
+      args: [BigInt(index)],
+      query: {
+        enabled: !!factoryAddress && index >= 0,
+      },
+    });
+  };
+
   /**
    * Create a new organization
    * @param name - Organization name (string)
@@ -76,6 +89,7 @@ export function useFactory() {
     userOrganizations: userOrganizations as `0x${string}`[],
     isLoadingOrgs,
     refetchOrganizations,
+    useProxyAtIndex,
 
     // Contract info
     factoryAddress,
