@@ -6,8 +6,6 @@ import 'aos/dist/aos.css';
 import Link from "next/link";
 import WalletConnect from "@/components/WalletConnect";
 import HowItWorks from "@/components/HowItWorks";
-import Testimonials from "@/components/Testimonials";
-import Stats from "@/components/Stats";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -37,7 +35,7 @@ export default function Home() {
             {/* Cool Blinking Animation instead of Wallet Connect Preview */}
             <div className="mb-6 sm:mb-8" data-aos="fade-down" data-aos-delay="400">
               <h2 className="text-2xl sm:text-3xl font-extrabold text-primary animate-pulse">
-                Explore the Future of Event Ticketing!
+                Blockchain-Powered Event Platform
               </h2>
             </div>
 
@@ -52,8 +50,7 @@ export default function Home() {
 
             {/* Subtitle */}
             <p className="text-lg sm:text-xl md:text-2xl text-foreground/70 max-w-2xl sm:max-w-3xl mx-auto mb-8 sm:mb-12 leading-relaxed px-4" data-aos="fade-up" data-aos-delay="600">
-              Discover amazing events happening around the world or host your own.
-              Connect your wallet and start exploring or creating the future of event ticketing.
+              Create events, sell NFT tickets, manage workers, and accept sponsorships—all powered by smart contracts on Lisk blockchain.
             </p>
 
             {/* CTA Buttons */}
@@ -69,7 +66,7 @@ export default function Home() {
                 </svg>
               </Link>
 
-              <Link href="/dashboard" className="btn-primary">Host Events</Link>
+              <Link href="/contract-dashboard" className="btn-primary">Host Events</Link>
             </div>
           </div>
         </div>
@@ -92,12 +89,12 @@ export default function Home() {
             <div className="card p-6 sm:p-8 text-center group hover:scale-105 transition-all duration-300 slide-in" data-aos="fade-up" data-aos-delay="100">
               <div className="w-14 h-14 sm:w-16 sm:h-16 glass rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                 </svg>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Secure Ticketing</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">NFT Tickets</h3>
               <p className="text-sm sm:text-base text-foreground/70 leading-relaxed">
-                Blockchain-powered tickets ensure authenticity and prevent fraud
+                ERC721 NFT tickets minted on purchase—each ticket is a unique, verified blockchain asset
               </p>
             </div>
 
@@ -105,12 +102,12 @@ export default function Home() {
             <div className="card p-6 sm:p-8 text-center group hover:scale-105 transition-all duration-300 slide-in" data-aos="fade-up" data-aos-delay="200">
               <div className="w-14 h-14 sm:w-16 sm:h-16 glass rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Global Events</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Worker Payroll</h3>
               <p className="text-sm sm:text-base text-foreground/70 leading-relaxed">
-                Discover events from around the world in one seamless platform
+                Add workers to events, set salaries, and automate payments after event completion
               </p>
             </div>
 
@@ -118,12 +115,12 @@ export default function Home() {
             <div className="card p-6 sm:p-8 text-center group hover:scale-105 transition-all duration-300 slide-in" data-aos="fade-up" data-aos-delay="300">
               <div className="w-14 h-14 sm:w-16 sm:h-16 glass rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Lightning Fast</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Sponsorship System</h3>
               <p className="text-sm sm:text-base text-foreground/70 leading-relaxed">
-                Instant transactions and real-time updates powered by modern technology
+                Accept sponsors who contribute funds and earn percentage-based returns from event revenue
               </p>
             </div>
 
@@ -131,12 +128,12 @@ export default function Home() {
             <div className="card p-6 sm:p-8 text-center group hover:scale-105 transition-all duration-300 slide-in" data-aos="fade-up" data-aos-delay="400">
               <div className="w-14 h-14 sm:w-16 sm:h-16 glass rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Easy Event Hosting</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">Smart Contract Security</h3>
               <p className="text-sm sm:text-base text-foreground/70 leading-relaxed">
-                Create and manage your events effortlessly with our intuitive tools and blockchain-powered features
+                Upgradeable UUPS contracts with Factory→Proxy→Implementation pattern for maximum security
               </p>
             </div>
           </div>
@@ -146,12 +143,6 @@ export default function Home() {
       {/* How It Works Section */}
       <HowItWorks />
 
-      {/* Testimonials Section */}
-      <Testimonials />
-
-      {/* Stats Section */}
-      <Stats />
-
       {/* CTA Section */}
       <section className="py-16 sm:py-20 lg:py-24" data-aos="fade-up">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
@@ -160,7 +151,7 @@ export default function Home() {
               Ready to Get Started?
             </h2>
             <p className="text-base sm:text-lg text-foreground/70 mb-6 sm:mb-8 max-w-2xl mx-auto">
-              Join thousands of users who are already discovering and hosting amazing events on Evenntz
+              Connect your wallet to create your organization proxy, launch events, manage teams, and accept sponsorships—all on-chain
             </p>
 
             {/* Wallet Connect Integration */}
@@ -176,22 +167,53 @@ export default function Home() {
                 Start Exploring
               </Link>
               <Link
-                href="/host/register"
+                href="/contract-dashboard/create"
                 className="btn-secondary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
               >
-                Become a Host
+                Create Organization
               </Link>
             </div>
 
-            {/* Demo Video Placeholder */}
+            {/* Platform Stats */}
+            <div className="mt-8 sm:mt-10 grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-foreground">ERC721</p>
+                <p className="text-sm text-foreground/60">NFT Tickets</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-foreground">Lisk</p>
+                <p className="text-sm text-foreground/60">Blockchain</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-foreground">UUPS</p>
+                <p className="text-sm text-foreground/60">Upgradeable</p>
+              </div>
+            </div>
+
+            {/* Demo coming soon section removed - replaced with platform info */}
             <div className="mt-8 sm:mt-10">
-              <div className="aspect-video bg-muted/30 rounded-lg flex items-center justify-center border-2 border-dashed border-muted-foreground/30">
+              <div className="glass-card p-6 rounded-lg">
                 <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto mb-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l.707.707A1 1 0 0012.414 11H13a1 1 0 011 1v1a1 1 0 01-1 1h-1.414a1 1 0 00-.707.293l-.707.707A1 1 0 009.586 15H9a1 1 0 01-1-1v-1a1 1 0 011-1z" />
-                  </svg>
-                  <p className="text-muted-foreground">Interactive Demo Coming Soon</p>
-                  <p className="text-sm text-muted-foreground/70 mt-1">Watch how Evenntz works in action</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">How It Works</h3>
+                  <p className="text-sm text-foreground/70 mb-4">Simple 4-step process:</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-sm">
+                    <div className="glass p-3 rounded">
+                      <p className="font-semibold text-primary mb-1">1. Create Proxy</p>
+                      <p className="text-foreground/60">Deploy your organization</p>
+                    </div>
+                    <div className="glass p-3 rounded">
+                      <p className="font-semibold text-primary mb-1">2. Launch Event</p>
+                      <p className="text-foreground/60">Set price & capacity</p>
+                    </div>
+                    <div className="glass p-3 rounded">
+                      <p className="font-semibold text-primary mb-1">3. Sell Tickets</p>
+                      <p className="text-foreground/60">NFTs minted on purchase</p>
+                    </div>
+                    <div className="glass p-3 rounded">
+                      <p className="font-semibold text-primary mb-1">4. Process Payments</p>
+                      <p className="text-foreground/60">Workers & sponsors paid</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
