@@ -1,91 +1,134 @@
-import { useCallback, useEffect, useState } from "react";
-import { web3Service, EventType } from "@/Services/Web3Service";
+import {
+  useReadContract,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
+import { eventImplementationAbi } from "@/lib/contracts";
 
-export type FormField = {
-  id: string;
-  label: string;
-  type: "text" | "email" | "number";
-  required?: boolean;
-};
+/**
+ * Hook for interacting with EventImplementation contract (via proxy)
+ * Handles event creation, reading events, and event management
+ */
+export function useEvents(proxyAddress?: `0x${string}`) {
+  // Use provided proxy or default proxy address
+  const contractAddress = proxyAddress;
 
-export type EventItem = {
-  eventAddress: string;
-  name: string;
-  eventType: EventType;
-  ticketPrice: string;
-  organizer: string;
-  bannerUrl: string; // gateway URL for the banner image
-  bannerCid?: string; // optional raw CID
-  date: string; // YYYY-MM-DD
-  time: string; // HH:mm
-  location: string;
-  organization?: string;
-  organizationDescription?: string;
-  eventDescription?: string;
-  lat?: number;
-  lng?: number;
-  formSchema?: FormField[];
-  analytics?: {
-    totalTicketsSold: number;
-    checkIns: number;
-    totalRevenue: string;
+  // Write: Create event
+  const {
+    writeContract,
+    data: hash,
+    isPending: isCreating,
+    error: createError,
+  } = useWriteContract();
+
+  // Wait for transaction confirmation
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
+
+  // Read: Get all events from a proxy
+  const {
+    data: events,
+    isLoading: isLoadingEvents,
+    refetch: refetchEvents,
+  } = useReadContract({
+    address: contractAddress,
+    abi: eventImplementationAbi,
+    functionName: "getAllEvents",
+    query: {
+      enabled: !!contractAddress,
+    },
+  });
+
+  // Read: Get single event details
+  const useEventDetails = (eventId?: bigint) => {
+    return useReadContract({
+      address: contractAddress,
+      abi: eventImplementationAbi,
+      functionName: "getEventInfo",
+      args: eventId !== undefined ? [eventId] : undefined,
+      query: {
+        enabled: !!contractAddress && eventId !== undefined,
+      },
+    });
   };
-  // Additional mapped properties
-  id: string;
-  isPaid: boolean;
-  price: string;
-  approvalNeeded: boolean;
-  hostAddress: string;
-  currency?: string;
-  active: boolean;
-};
 
-export function useEvents() {
-  const [events, setEvents] = useState<EventItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const loadEvents = useCallback(async () => {
-    try {
-      setLoading(true);
-      const allEvents = await web3Service.getAllEvents();
-
-      const eventsWithAnalytics = await Promise.all(
-        // @ts-ignore
-        allEvents.filter(event => event.active).map(async (event) => {
-          const analytics = await web3Service.getEventAnalytics(event.eventAddress);
-          return {
-            ...event,
-            id: event.eventAddress,
-            isPaid: event.eventType === EventType.PAID,
-            price: event.ticketPrice,
-            approvalNeeded: event.eventType === EventType.APPROVAL,
-            hostAddress: event.organizer,
-            organizer: event.organizer,
-            blockchainEventAddress: event.eventAddress,
-            active: event.active,
-            analytics,
-          };
-        })
-      );
-
-      setEvents(eventsWithAnalytics);
-    } finally {
-      setLoading(false);
+  /**
+   * Create a new event
+   * @param params - Event parameters
+   */
+  const createEvent = async (params: {
+    name: string;
+    ticketPrice: bigint;
+    maxTickets: bigint;
+    startTime: bigint;
+    endTime: bigint;
+    ticketUri: string;
+    eventType: number; // 0 = FREE, 1 = PAID
+    amountNeeded: bigint;
+    _category: string;
+    _location: string;
+    _tags: string[];
+  }) => {
+    if (!contractAddress) {
+      throw new Error("Proxy address is required");
     }
-  }, []);
 
-  useEffect(() => {
-    loadEvents();
-  }, [loadEvents]);
+    return writeContract({
+      address: contractAddress,
+      abi: eventImplementationAbi,
+      functionName: "createEvent",
+      args: [
+        params.name,
+        params.ticketPrice,
+        params.maxTickets,
+        params.startTime,
+        params.endTime,
+        params.ticketUri,
+        params.eventType,
+        params.amountNeeded,
+        params._category,
+        params._location,
+        params._tags,
+      ],
+    });
+  };
 
-  const updateEvent = (id: string, updates: Partial<EventItem>) => {
-    setEvents(prev => prev.map(event => event.id === id ? { ...event, ...updates } : event));
+  /**
+   * Process payments for an event (pay workers)
+   */
+  const processPayments = async () => {
+    if (!contractAddress) {
+      throw new Error("Proxy address is required");
+    }
+
+    return writeContract({
+      address: contractAddress,
+      abi: eventImplementationAbi,
+      functionName: "pay",
+      args: [],
+    });
   };
 
   return {
-    events,
-    loading,
-    loadEvents,
-    updateEvent,
+    // Write functions
+    createEvent,
+    processPayments,
+    isCreating,
+    isConfirming,
+    isConfirmed,
+    createError,
+    transactionHash: hash,
+
+    // Read functions
+    events: (events as any[]) || [],
+    eventCount: events ? (events as any[]).length : 0,
+    isLoadingEvents,
+    refetchEvents,
+    useEventDetails,
+
+    // Contract info
+    proxyAddress: contractAddress,
   };
 }
