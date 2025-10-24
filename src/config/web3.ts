@@ -1,13 +1,17 @@
-// Web3 Configuration
+// Web3 Configuration for Lisk Sepolia
 export const WEB3_CONFIG = {
-  // Sepolia Testnet Configuration
-  CHAIN_ID: 11155111, // Sepolia testnet
-  CHAIN_NAME: 'Sepolia Testnet',
-  RPC_URL: process.env.NEXT_PUBLIC_SEPOLIA_TESTNET_RPC_URL || 'https://sepolia.etherscan.io',
-  BLOCK_EXPLORER_URL: 'https://sepolia.etherscan.io',
+  // Lisk Sepolia Testnet Configuration
+  CHAIN_ID: 4202, // Lisk Sepolia testnet
+  CHAIN_NAME: 'Lisk Sepolia Testnet',
+  RPC_URL: process.env.NEXT_PUBLIC_RPC_URL || 'https://rpc.sepolia-api.lisk.com',
+  BLOCK_EXPLORER_URL: 'https://sepolia-blockscout.lisk.com',
   
-  // Contract Addresses (Testnet - will need to be deployed)
-  EVENT_FACTORY_ADDRESS: process.env.NEXT_PUBLIC_EVENT_FACTORY_ADDRESS as `0x${string}` || '0x0000000000000000000000000000000000000000', // Placeholder - needs deployment
+  // Contract Addresses (Lisk Sepolia)
+  FACTORY_ADDRESS: process.env.NEXT_PUBLIC_FACTORY_ADDRESS as `0x${string}` || '0x0000000000000000000000000000000000000000',
+  IMPLEMENTATION_ADDRESS: process.env.NEXT_PUBLIC_IMPLEMENTATION_ADDRESS as `0x${string}` || '0x0000000000000000000000000000000000000000',
+  
+  // Legacy support (deprecated - use FACTORY_ADDRESS)
+  EVENT_FACTORY_ADDRESS: process.env.NEXT_PUBLIC_FACTORY_ADDRESS as `0x${string}` || '0x0000000000000000000000000000000000000000',
   PLATFORM_OWNER_ADDRESS: process.env.NEXT_PUBLIC_PLATFORM_OWNER_ADDRESS as `0x${string}`,
   
   // Gas Configuration
@@ -31,10 +35,37 @@ export const WEB3_CONFIG = {
 } as const;
 
 // Validation
-if (!WEB3_CONFIG.EVENT_FACTORY_ADDRESS) {
-  console.warn('EVENT_FACTORY_ADDRESS not set in environment variables');
+if (!WEB3_CONFIG.FACTORY_ADDRESS || WEB3_CONFIG.FACTORY_ADDRESS === '0x0000000000000000000000000000000000000000') {
+  console.warn('⚠️ FACTORY_ADDRESS not set - Please set NEXT_PUBLIC_FACTORY_ADDRESS in .env.local');
 }
 
-if (!WEB3_CONFIG.PLATFORM_OWNER_ADDRESS) {
-  console.warn('PLATFORM_OWNER_ADDRESS not set in environment variables');
+if (!WEB3_CONFIG.IMPLEMENTATION_ADDRESS || WEB3_CONFIG.IMPLEMENTATION_ADDRESS === '0x0000000000000000000000000000000000000000') {
+  console.warn('⚠️ IMPLEMENTATION_ADDRESS not set - Please set NEXT_PUBLIC_IMPLEMENTATION_ADDRESS in .env.local');
 }
+
+// Export Lisk Sepolia chain configuration for Wagmi
+export const liskSepolia = {
+  id: 4202,
+  name: 'Lisk Sepolia Testnet',
+  network: 'lisk-sepolia',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Sepolia Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: [WEB3_CONFIG.RPC_URL],
+    },
+    public: {
+      http: [WEB3_CONFIG.RPC_URL],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Blockscout',
+      url: WEB3_CONFIG.BLOCK_EXPLORER_URL,
+    },
+  },
+  testnet: true,
+} as const;

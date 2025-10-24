@@ -1,24 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import ThemeToggle from "./ThemeToggle";
 import { useState } from "react";
 import Logo from "./Logo";
 
 export default function Header() {
-  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Hide header on mobile for host pages
-  const isHostPage = pathname.startsWith('/host');
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <header className={`w-full glass-enhanced border-b border-foreground/10 sticky top-0 z-50 transition-all duration-300 shadow-lg backdrop-blur-md bg-white/30 ${isHostPage ? 'hidden lg:block' : ''}`}>
+    <header className="w-full glass-enhanced border-b border-foreground/10 sticky top-0 z-50 transition-all duration-300 shadow-lg backdrop-blur-md bg-white/30">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
@@ -41,7 +36,7 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
             <Link
-              href="/dashboard"
+              href="/contract-dashboard"
               className="text-sm font-medium text-foreground/70 hover:text-foreground transition-all duration-300 hover:scale-105 relative group"
             >
               Dashboard
@@ -55,7 +50,7 @@ export default function Header() {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link
-              href="/host"
+              href="/contract-dashboard/create"
               className="text-sm font-medium text-foreground/70 hover:text-foreground transition-all duration-300 hover:scale-105 relative group"
             >
               Create Event
@@ -89,7 +84,7 @@ export default function Header() {
         <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="py-4 space-y-4">
             <Link
-              href="/dashboard"
+              href="/contract-dashboard"
               className="block px-4 py-3 text-base font-medium text-foreground/70 hover:text-foreground hover:bg-foreground/5 rounded-lg transition-all duration-300"
               onClick={closeMenu}
             >
@@ -103,7 +98,7 @@ export default function Header() {
               Explore Events
             </Link>
             <Link
-              href="/host"
+              href="/contract-dashboard/create"
               className="block px-4 py-3 text-base font-medium text-foreground/70 hover:text-foreground hover:bg-foreground/5 rounded-lg transition-all duration-300"
               onClick={closeMenu}
             >
