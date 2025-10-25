@@ -1,31 +1,43 @@
-import { createPublicClient, http, parseEther, formatEther, type Address, type Hash, defineChain } from 'viem';
-import { LibStorage } from '../types/contracts';
+import {
+  createPublicClient,
+  http,
+  parseEther,
+  formatEther,
+  type Address,
+  type Hash,
+  defineChain,
+} from "viem";
+import { LibStorage } from "../types/contracts";
 
 // Contract addresses - from environment variables
-const FACTORY_ADDRESS = process.env.NEXT_PUBLIC_FACTORY_ADDRESS as Address;
-const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || 'https://rpc.sepolia-api.lisk.com';
-const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID || 4202);
+const FACTORY_ADDRESS = ENV.FACTORY_ADDRESS as Address;
+const RPC_URL = ENV.RPC_URL;
+const CHAIN_ID = ENV.CHAIN_ID;
 
 // Lisk Sepolia Testnet Configuration
 const liskSepolia = defineChain({
   id: CHAIN_ID,
-  name: 'Lisk Sepolia',
-  nativeCurrency: { name: 'Sepolia Ether', symbol: 'ETH', decimals: 18 },
+  name: "Lisk Sepolia",
+  nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
     default: { http: [RPC_URL] },
   },
   blockExplorers: {
-    default: { name: 'Lisk Explorer', url: 'https://sepolia-blockscout.lisk.com' },
+    default: {
+      name: "Lisk Explorer",
+      url: "https://sepolia-blockscout.lisk.com",
+    },
   },
   testnet: true,
 });
 
 // Contract ABIs
-import { FACTORY_ABI, IMPLEMENTATION_ABI } from '../abis/contracts';
+import { FACTORY_ABI, IMPLEMENTATION_ABI } from "../abis/contracts";
+import { ENV } from "@/lib/constants";
 
 /**
  * Contract Service for Evenntz Platform on Lisk Network
- * 
+ *
  * ARCHITECTURE:
  * - Factory creates Organization Proxies (one per organizer)
  * - Each Proxy delegates calls to Implementation contract
@@ -39,13 +51,15 @@ class ContractService {
 
   constructor() {
     if (!FACTORY_ADDRESS) {
-      throw new Error('NEXT_PUBLIC_FACTORY_ADDRESS is not configured in environment variables');
+      throw new Error(
+        "NEXT_PUBLIC_FACTORY_ADDRESS is not configured in environment variables",
+      );
     }
-    
+
     this.factoryAddress = FACTORY_ADDRESS;
     this.publicClient = createPublicClient({
       chain: liskSepolia,
-      transport: http(RPC_URL)
+      transport: http(RPC_URL),
     });
   }
 
@@ -71,7 +85,7 @@ class ContractService {
       const implementation = await this.getImplementationAddress();
       return !!implementation;
     } catch (error) {
-      console.error('Factory connection failed:', error);
+      console.error("Factory connection failed:", error);
       return false;
     }
   }
@@ -83,7 +97,7 @@ class ContractService {
     const implementation = await this.publicClient.readContract({
       address: this.factoryAddress,
       abi: FACTORY_ABI,
-      functionName: 'implementation',
+      functionName: "implementation",
     });
     return implementation as Address;
   }
@@ -96,12 +110,12 @@ class ContractService {
    * Create a new organization proxy
    */
   async createOrganizationProxy(orgName: string): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     const hash = await this.walletClient.writeContract({
       address: this.factoryAddress,
       abi: FACTORY_ABI,
-      functionName: 'createProxy',
+      functionName: "createProxy",
       args: [orgName],
     });
 
@@ -115,7 +129,7 @@ class ContractService {
     const proxyAddress = await this.publicClient.readContract({
       address: this.factoryAddress,
       abi: FACTORY_ABI,
-      functionName: 'getOwnerProxy',
+      functionName: "getOwnerProxy",
       args: [owner],
     });
 
@@ -128,7 +142,7 @@ class ContractService {
   async isOrganizationRegistered(owner: Address): Promise<boolean> {
     try {
       const proxyAddress = await this.getOrganizationProxy(owner);
-      return proxyAddress !== '0x0000000000000000000000000000000000000000';
+      return proxyAddress !== "0x0000000000000000000000000000000000000000";
     } catch {
       return false;
     }
@@ -152,14 +166,14 @@ class ContractService {
       ticketUri: string;
       eventType: LibStorage.EventType;
       amountNeededForExpenses: bigint;
-    }
+    },
   ): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     const hash = await this.walletClient.writeContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'createEvent',
+      functionName: "createEvent",
       args: [
         params.name,
         params.ticketPrice,
@@ -168,7 +182,7 @@ class ContractService {
         params.endTime,
         params.ticketUri,
         params.eventType,
-        params.amountNeededForExpenses
+        params.amountNeededForExpenses,
       ],
     });
 
@@ -178,11 +192,13 @@ class ContractService {
   /**
    * Get all events for an organization
    */
-  async getOrganizationEvents(proxyAddress: Address): Promise<LibStorage.EventStruct[]> {
+  async getOrganizationEvents(
+    proxyAddress: Address,
+  ): Promise<LibStorage.EventStruct[]> {
     const events = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getAllEvents',
+      functionName: "getAllEvents",
     });
 
     return events as LibStorage.EventStruct[];
@@ -191,11 +207,14 @@ class ContractService {
   /**
    * Get specific event information
    */
-  async getEventInfo(proxyAddress: Address, eventId: bigint): Promise<LibStorage.EventStruct> {
+  async getEventInfo(
+    proxyAddress: Address,
+    eventId: bigint,
+  ): Promise<LibStorage.EventStruct> {
     const event = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getEventInfo',
+      functionName: "getEventInfo",
       args: [eventId],
     });
 
@@ -214,14 +233,14 @@ class ContractService {
     salary: bigint,
     description: string,
     employeeAddress: Address,
-    eventId: bigint
+    eventId: bigint,
   ): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     const hash = await this.walletClient.writeContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'addWorkerToPayroll',
+      functionName: "addWorkerToPayroll",
       args: [salary, description, employeeAddress, eventId],
     });
 
@@ -234,14 +253,14 @@ class ContractService {
   async addWorkersToPayroll(
     proxyAddress: Address,
     workersInfo: LibStorage.WorkerInfo[],
-    eventId: bigint
+    eventId: bigint,
   ): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     const hash = await this.walletClient.writeContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'addWorkersToPayroll',
+      functionName: "addWorkersToPayroll",
       args: [workersInfo, eventId],
     });
 
@@ -255,14 +274,14 @@ class ContractService {
     proxyAddress: Address,
     employeeAddress: Address,
     newSalary: bigint,
-    eventId: bigint
+    eventId: bigint,
   ): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     const hash = await this.walletClient.writeContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'updateWorkerSalary',
+      functionName: "updateWorkerSalary",
       args: [employeeAddress, newSalary, eventId],
     });
 
@@ -275,12 +294,12 @@ class ContractService {
   async getWorkerInfo(
     proxyAddress: Address,
     employee: Address,
-    eventId: bigint
+    eventId: bigint,
   ): Promise<LibStorage.WorkerInfo> {
     const workerInfo = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getWorkerInfo',
+      functionName: "getWorkerInfo",
       args: [employee, eventId],
     });
 
@@ -290,11 +309,14 @@ class ContractService {
   /**
    * Get all workers for an event
    */
-  async getEventWorkers(proxyAddress: Address, eventId: bigint): Promise<LibStorage.WorkerInfo[]> {
+  async getEventWorkers(
+    proxyAddress: Address,
+    eventId: bigint,
+  ): Promise<LibStorage.WorkerInfo[]> {
     const workers = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getEventWorkers',
+      functionName: "getEventWorkers",
       args: [eventId],
     });
 
@@ -304,11 +326,14 @@ class ContractService {
   /**
    * Get total cost for event (all worker salaries)
    */
-  async getTotalEventCost(proxyAddress: Address, eventId: bigint): Promise<bigint> {
+  async getTotalEventCost(
+    proxyAddress: Address,
+    eventId: bigint,
+  ): Promise<bigint> {
     const totalCost = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getTotalCost',
+      functionName: "getTotalCost",
       args: [eventId],
     });
 
@@ -325,14 +350,14 @@ class ContractService {
   async sponsorEvent(
     proxyAddress: Address,
     eventId: bigint,
-    amount: bigint
+    amount: bigint,
   ): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     const hash = await this.walletClient.writeContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'sponsorEvent',
+      functionName: "sponsorEvent",
       args: [eventId, amount],
       value: amount, // Send ETH with the transaction
     });
@@ -346,12 +371,12 @@ class ContractService {
   async getSponsorInfo(
     proxyAddress: Address,
     sponsor: Address,
-    eventId: bigint
+    eventId: bigint,
   ): Promise<LibStorage.SponsorInfo> {
     const sponsorInfo = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getSponsorInfo',
+      functionName: "getSponsorInfo",
       args: [sponsor, eventId],
     });
 
@@ -361,11 +386,14 @@ class ContractService {
   /**
    * Get total sponsorship for an event
    */
-  async getTotalSponsorship(proxyAddress: Address, eventId: bigint): Promise<bigint> {
+  async getTotalSponsorship(
+    proxyAddress: Address,
+    eventId: bigint,
+  ): Promise<bigint> {
     const totalSponsorship = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getTotalSponsorship',
+      functionName: "getTotalSponsorship",
       args: [eventId],
     });
 
@@ -375,11 +403,14 @@ class ContractService {
   /**
    * Get all sponsors for an event
    */
-  async getAllSponsors(proxyAddress: Address, eventId: bigint): Promise<LibStorage.SponsorInfo[]> {
+  async getAllSponsors(
+    proxyAddress: Address,
+    eventId: bigint,
+  ): Promise<LibStorage.SponsorInfo[]> {
     const sponsors = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getAllSponsors',
+      functionName: "getAllSponsors",
       args: [eventId],
     });
 
@@ -394,7 +425,7 @@ class ContractService {
    * Buy a ticket for an event
    */
   async buyTicket(proxyAddress: Address, eventId: bigint): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     // First get the event info to determine price
     const eventInfo = await this.getEventInfo(proxyAddress, eventId);
@@ -402,9 +433,12 @@ class ContractService {
     const hash = await this.walletClient.writeContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'buyTicket',
+      functionName: "buyTicket",
       args: [eventId],
-      value: eventInfo.eventType === LibStorage.EventType.Paid ? eventInfo.ticketPrice : BigInt(0),
+      value:
+        eventInfo.eventType === LibStorage.EventType.Paid
+          ? eventInfo.ticketPrice
+          : BigInt(0),
     });
 
     return hash;
@@ -413,11 +447,14 @@ class ContractService {
   /**
    * Get ticket sales information
    */
-  async getTicketSales(proxyAddress: Address, eventId: bigint): Promise<bigint> {
+  async getTicketSales(
+    proxyAddress: Address,
+    eventId: bigint,
+  ): Promise<bigint> {
     const ticketsSold = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getTicketTotalSale',
+      functionName: "getTicketTotalSale",
       args: [eventId],
     });
 
@@ -427,11 +464,14 @@ class ContractService {
   /**
    * Get event revenue
    */
-  async getEventRevenue(proxyAddress: Address, eventId: bigint): Promise<bigint> {
+  async getEventRevenue(
+    proxyAddress: Address,
+    eventId: bigint,
+  ): Promise<bigint> {
     const revenue = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getEventRevenue',
+      functionName: "getEventRevenue",
       args: [eventId],
     });
 
@@ -446,12 +486,12 @@ class ContractService {
    * Process payments for all ended events (the main payment function)
    */
   async processPayments(proxyAddress: Address): Promise<Hash> {
-    if (!this.walletClient) throw new Error('Wallet not connected');
+    if (!this.walletClient) throw new Error("Wallet not connected");
 
     const hash = await this.walletClient.writeContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'pay',
+      functionName: "pay",
     });
 
     return hash;
@@ -468,7 +508,7 @@ class ContractService {
     const owner = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getOwner',
+      functionName: "getOwner",
     });
 
     return owner as Address;
@@ -481,7 +521,7 @@ class ContractService {
     const owners = await this.publicClient.readContract({
       address: proxyAddress,
       abi: IMPLEMENTATION_ABI,
-      functionName: 'getAllContractOwner',
+      functionName: "getAllContractOwner",
     });
 
     return owners as Address[];
@@ -505,3 +545,4 @@ class ContractService {
 // Export singleton instance
 export const contractService = new ContractService();
 export default ContractService;
+
