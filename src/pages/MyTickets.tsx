@@ -10,6 +10,7 @@ import Input from '../components/ui/Input';
 import { useToast } from '../components/ui/Toast';
 import { useTickets } from '../hooks';
 import { formatAddress } from '../lib/utils';
+import {Header} from '../components/layout/Header';
 
 interface TicketWithEvent {
   tokenId: bigint;
@@ -132,12 +133,15 @@ export default function MyTickets() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header/>
       <div className="container-custom py-12">
         <div className="flex justify-between items-center mb-8">
           <div>
+            
             <h1 className="text-4xl font-bold mb-2">My Tickets</h1>
             <p className="text-gray-600">Your NFT event tickets collection</p>
           </div>
+          
         </div>
 
         {/* Filter Tabs */}

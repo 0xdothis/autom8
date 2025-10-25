@@ -9,6 +9,7 @@ import Input from '../components/ui/Input';
 import { useFactory } from '../hooks';
 import { eventImplementationAbi } from '@/lib/contracts';
 import { getKnownProxies } from '@/lib/contracts/known-proxies';
+import { Header } from '../components/layout/Header';
 
 interface EventWithOrg {
   id: bigint;
@@ -137,6 +138,7 @@ export default function EventsList() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header/>
       <div className="container-custom py-12">
         {/* Header */}
         <div className="mb-8">
