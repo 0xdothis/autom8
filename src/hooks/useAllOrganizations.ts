@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useReadContract, useChainId } from 'wagmi';
-import { eventFactoryAbi, eventImplementationAbi, getContractAddress } from '@/lib/contracts';
-import { getKnownProxies } from '@/lib/contracts/known-proxies';
+import { useState, useEffect } from "react";
+import { useReadContract, useChainId } from "wagmi";
+import { eventImplementationAbi, getContractAddress } from "@/lib/contracts";
+import { getKnownProxies } from "@/lib/contracts/known-proxies";
 
-interface Event {
+/** interface Event {
   id: bigint;
   name: string;
   ticketPrice: bigint;
@@ -14,7 +14,7 @@ interface Event {
   eventType: number;
   amountNeeded: bigint;
   proxyAddress: string;
-}
+} */
 
 /**
  * Hook to discover all organizations and their events
@@ -23,9 +23,9 @@ interface Event {
  */
 export function useAllOrganizations() {
   const chainId = useChainId();
-  const factoryAddress = getContractAddress(chainId, 'factory');
+  const factoryAddress = getContractAddress(chainId, "factory");
   const [allProxies, setAllProxies] = useState<`0x${string}`[]>([]);
-  const [allEvents, setAllEvents] = useState<Event[]>([]);
+  //const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [isLoadingProxies, setIsLoadingProxies] = useState(true);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
 
@@ -45,7 +45,7 @@ export function useAllOrganizations() {
 
     const discoverProxies = async () => {
       const discovered: `0x${string}`[] = [...getKnownProxies()];
-      
+
       // Try querying proxiesList indices 0-50 (adjust as needed)
       // We'll stop when we get an error or zero address
       for (let i = 0; i < 50; i++) {
@@ -58,10 +58,10 @@ export function useAllOrganizations() {
         }
       }
 
-      const unique = [...new Set(discovered)].filter(addr => 
-        addr !== '0x0000000000000000000000000000000000000000'
+      const unique = [...new Set(discovered)].filter(
+        (addr) => addr !== "0x0000000000000000000000000000000000000000",
       );
-      
+
       setAllProxies(unique);
       setIsLoadingProxies(false);
     };
@@ -78,7 +78,7 @@ export function useAllOrganizations() {
 
     const fetchAllEvents = async () => {
       setIsLoadingEvents(true);
-      
+
       // For now, we'll just return the proxies list
       // The EventsList component will need to fetch events per proxy
       setIsLoadingEvents(false);
@@ -89,7 +89,7 @@ export function useAllOrganizations() {
 
   return {
     allProxies,
-    allEvents,
+    //allEvents,
     isLoadingProxies,
     isLoadingEvents,
     proxiesCount: allProxies.length,
@@ -103,7 +103,7 @@ export function useProxyEvents(proxyAddress?: `0x${string}`) {
   const { data: events, isLoading } = useReadContract({
     address: proxyAddress,
     abi: eventImplementationAbi,
-    functionName: 'getAllEvents',
+    functionName: "getAllEvents",
     query: {
       enabled: !!proxyAddress,
     },
