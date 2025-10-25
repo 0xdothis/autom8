@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Link from "next/link";
-import WalletConnect from "@/components/WalletConnect";
-import HowItWorks from "@/components/HowItWorks";
-import Footer from "@/components/Footer";
+import HowItWorks from "../components/landing/HowItWorksSection";
+import { Footer } from "../components/layout/Footer";
+import WalletConnect from '@/components/WalletConnect';
 
 export default function Home() {
   useEffect(() => {

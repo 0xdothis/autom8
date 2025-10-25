@@ -7,7 +7,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { wagmiConfig } from '@/lib/wagmi';
 import { rainbowKitTheme } from '@/lib/rainbowkit';
 import { ToastProvider } from '@/components/ui';
-import { DashboardLayout } from '@/components/layout';
+import { DashboardLayout, RootLayout } from '@/components/layout';
 
 // Pages
 import Landing from '@/pages/Landing';
@@ -40,12 +40,17 @@ function App() {
           <ToastProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/events" element={<EventsList />} />
-                <Route path="/events/:proxyAddress/:eventId" element={<EventDetails />} />
-                <Route path="/tickets" element={<MyTickets />} />
-                <Route path="/create-organization" element={<CreateOrganization />} />
-                
+                {/* Root Layout for non-dashboard pages */}
+                <Route element={<RootLayout />}>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/events" element={<EventsList />} />
+                  <Route path="/events/:proxyAddress/:eventId" element={<EventDetails />} />
+                  <Route path="/tickets" element={<MyTickets />} />
+                  <Route path="/create-organization" element={<CreateOrganization />} />
+                  <Route path="/showcase" element={<ComponentShowcase />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+
                 {/* Dashboard Routes with Sidebar Layout */}
                 <Route path="/dashboard" element={<DashboardLayout />}>
                   <Route index element={<Dashboard />} />
@@ -53,9 +58,6 @@ function App() {
                   <Route path="workers" element={<WorkerManagement />} />
                   <Route path="sponsorships" element={<Sponsorships />} />
                 </Route>
-                
-                <Route path="/showcase" element={<ComponentShowcase />} />
-                <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
           </ToastProvider>

@@ -13,7 +13,7 @@ const liskSepolia = defineChain({
   },
   rpcUrls: {
     default: {
-      http: [process.env.NEXT_PUBLIC_RPC_URL || 'https://rpc.sepolia-api.lisk.com'],
+      http: [(globalThis as any).process?.env?.NEXT_PUBLIC_RPC_URL || 'https://rpc.sepolia-api.lisk.com'],
     },
     public: {
       http: ['https://rpc.sepolia-api.lisk.com'],
@@ -28,7 +28,7 @@ const liskSepolia = defineChain({
   testnet: true,
 });
 
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID';
+const projectId = (globalThis as any).process?.env?.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID';
 
 const { connectors: defaultConnectors } = getDefaultWallets({
   appName: 'Evenntz',

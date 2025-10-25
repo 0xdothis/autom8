@@ -1,4 +1,3 @@
-import { Header, Footer } from '@/components/layout';
 import {
   HeroSection,
   FeaturesGrid,
@@ -9,9 +8,7 @@ import {
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Header />
-      
+    <div className="bg-white">
       {/* Hero Section */}
       <HeroSection />
 
@@ -26,8 +23,6 @@ export default function Landing() {
 
       {/* Platform Statistics */}
       <StatsSection />
-
-      <Footer />
     </div>
   );
 }
