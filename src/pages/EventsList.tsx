@@ -138,8 +138,17 @@ export default function EventsList() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container-custom py-12">
-        {/* Header */}
+        {/* Header with Back Navigation */}
         <div className="mb-8">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="flex items-center text-gray-600 hover:text-black transition-colors duration-200 mb-4 group"
+          >
+            <svg className="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Dashboard
+          </button>
           <h1 className="text-4xl font-bold mb-2">Explore Events</h1>
           <p className="text-gray-600">Discover and join exciting events on the blockchain</p>
         </div>
@@ -295,7 +304,7 @@ export default function EventsList() {
                           <span className="font-medium">
                             {event.ticketPrice === BigInt(0)
                               ? 'FREE'
-                              : `${formatEther(event.ticketPrice)} ETH`}
+                              : `${formatEther(event.ticketPrice)} USDT`}
                           </span>
                         </div>
                       </div>

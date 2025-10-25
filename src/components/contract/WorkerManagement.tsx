@@ -231,7 +231,7 @@ export default function WorkerManagement({ proxyAddress, eventId }: Readonly<Wor
                       </span>
                     </td>
                     <td className="py-4 px-4">
-                      <p className="font-semibold text-foreground">{worker.formattedSalary} ETH</p>
+                      <p className="font-semibold text-foreground">{worker.formattedSalary} USDT</p>
                     </td>
                     <td className="py-4 px-4">
                       {worker.paid ? (

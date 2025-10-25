@@ -475,7 +475,7 @@ export default function CreateEvent() {
                   <p className="text-gray-600">
                     Max Revenue:{' '}
                     {(Number.parseFloat(formData.ticketPrice || '0') * Number.parseInt(formData.maxTickets || '0')).toFixed(4)}{' '}
-                    ETH
+                    USDT
                   </p>
                 </div>
               </CardBody>
@@ -507,12 +507,12 @@ export default function CreateEvent() {
                       <p className="text-gray-600">Expected Revenue</p>
                       <p className="font-semibold">
                         {(Number.parseFloat(formData.ticketPrice || '0') * Number.parseInt(formData.maxTickets || '0')).toFixed(4)}{' '}
-                        ETH
+                        USDT
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600">Expected Expenses</p>
-                      <p className="font-semibold">{Number.parseFloat(formData.expenses || '0').toFixed(4)} ETH</p>
+                      <p className="font-semibold">{Number.parseFloat(formData.expenses || '0').toFixed(4)} USDT</p>
                     </div>
                     <div className="col-span-2 pt-3 border-t">
                       <p className="text-gray-600">Projected Profit/Loss</p>
@@ -526,7 +526,7 @@ export default function CreateEvent() {
                           const expenses = Number.parseFloat(formData.expenses || '0');
                           return (revenue - expenses).toFixed(4);
                         })()}{' '}
-                        ETH
+                        USDT
                       </p>
                     </div>
                   </div>
@@ -597,7 +597,7 @@ export default function CreateEvent() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Price:</span>
-                        <span className="font-medium">{formData.ticketPrice} ETH</span>
+                        <span className="font-medium">{formData.ticketPrice} USDT</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Max Tickets:</span>
@@ -607,7 +607,7 @@ export default function CreateEvent() {
                         <span className="text-gray-600">Max Revenue:</span>
                         <span className="font-medium">
                           {(Number.parseFloat(formData.ticketPrice || '0') * Number.parseInt(formData.maxTickets || '0')).toFixed(4)}{' '}
-                          ETH
+                          USDT
                         </span>
                       </div>
                     </div>
@@ -618,7 +618,7 @@ export default function CreateEvent() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Expenses:</span>
-                        <span className="font-medium">{formData.expenses} ETH</span>
+                        <span className="font-medium">{formData.expenses} USDT</span>
                       </div>
                     </div>
                   </div>

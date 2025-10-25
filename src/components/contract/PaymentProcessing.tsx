@@ -236,7 +236,7 @@ export default function PaymentProcessing({ proxyAddress, eventId }: Readonly<Pa
                     </div>
 
                     <div className="text-right">
-                      <p className="text-lg font-bold text-foreground">{worker.formattedSalary} ETH</p>
+                      <p className="text-lg font-bold text-foreground">{worker.formattedSalary} USDT</p>
                     </div>
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export default function PaymentProcessing({ proxyAddress, eventId }: Readonly<Pa
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-foreground">{worker.formattedSalary} ETH</p>
+                    <p className="font-semibold text-foreground">{worker.formattedSalary} USDT</p>
                     <p className="text-xs text-success">Completed</p>
                   </div>
                 </div>

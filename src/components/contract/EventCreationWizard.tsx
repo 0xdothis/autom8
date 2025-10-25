@@ -336,7 +336,7 @@ export default function EventCreationWizard({ proxyAddress, onComplete, onCancel
             className={`input w-full pr-16 ${errors.ticketPrice ? 'border-error' : ''}`}
           />
           <div className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/60">
-            ETH
+            USDT
           </div>
         </div>
         {errors.ticketPrice && <p className="text-error text-sm mt-1">{errors.ticketPrice}</p>}
@@ -364,12 +364,12 @@ export default function EventCreationWizard({ proxyAddress, onComplete, onCancel
           </div>
           <div className="flex justify-between text-foreground/80">
             <span>Price per ticket:</span>
-            <span>{formData.ticketPrice || 0} ETH</span>
+            <span>{formData.ticketPrice || 0} USDT</span>
           </div>
           <div className="border-t border-foreground/10 pt-2 mt-2 flex justify-between font-bold text-foreground text-lg">
             <span>Potential Revenue:</span>
             <span>
-              {(Number.parseFloat(formData.ticketPrice || '0') * Number.parseInt(formData.maxTickets || '0')).toFixed(3)} ETH
+              {(Number.parseFloat(formData.ticketPrice || '0') * Number.parseInt(formData.maxTickets || '0')).toFixed(3)} USDT
             </span>
           </div>
         </div>
@@ -440,7 +440,7 @@ export default function EventCreationWizard({ proxyAddress, onComplete, onCancel
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-foreground/60 mb-1">Ticket Price</p>
-              <p className="text-foreground font-semibold">{formData.ticketPrice} ETH</p>
+              <p className="text-foreground font-semibold">{formData.ticketPrice} USDT</p>
             </div>
             <div>
               <p className="text-sm text-foreground/60 mb-1">Max Tickets</p>

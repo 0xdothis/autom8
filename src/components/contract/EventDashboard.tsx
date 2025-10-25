@@ -213,20 +213,20 @@ export default function EventDashboard({ proxyAddress, organizationName }: Reado
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                   <div className="text-center p-3 bg-muted/30 rounded-lg">
                     <p className="text-sm text-foreground/60">Revenue</p>
-                    <p className="font-semibold text-success">{stats.revenue.toFixed(4)} ETH</p>
+                    <p className="font-semibold text-success">{stats.revenue.toFixed(4)} USDT</p>
                   </div>
                   <div className="text-center p-3 bg-muted/30 rounded-lg">
                     <p className="text-sm text-foreground/60">Sponsorship</p>
-                    <p className="font-semibold text-primary">{stats.sponsorship.toFixed(4)} ETH</p>
+                    <p className="font-semibold text-primary">{stats.sponsorship.toFixed(4)} USDT</p>
                   </div>
                   <div className="text-center p-3 bg-muted/30 rounded-lg">
                     <p className="text-sm text-foreground/60">Expenses</p>
-                    <p className="font-semibold text-destructive">{stats.expenses.toFixed(4)} ETH</p>
+                    <p className="font-semibold text-destructive">{stats.expenses.toFixed(4)} USDT</p>
                   </div>
                   <div className="text-center p-3 bg-muted/30 rounded-lg">
                     <p className="text-sm text-foreground/60">Profit</p>
                     <p className={`font-semibold ${stats.profit >= 0 ? 'text-success' : 'text-destructive'}`}>
-                      {stats.profit.toFixed(4)} ETH
+                      {stats.profit.toFixed(4)} USDT
                     </p>
                   </div>
                 </div>

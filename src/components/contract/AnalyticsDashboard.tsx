@@ -88,7 +88,7 @@ export default function AnalyticsDashboard({ proxyAddress }: AnalyticsDashboardP
               </svg>
             </div>
           </div>
-          <p className="text-3xl font-bold text-foreground mb-1">{totalRevenue.toFixed(3)} ETH</p>
+          <p className="text-3xl font-bold text-foreground mb-1">{totalRevenue.toFixed(3)} USDT</p>
           <p className="text-sm text-foreground/60">Total Revenue</p>
           <p className="text-xs text-success mt-2">↑ All time</p>
         </div>
@@ -127,7 +127,7 @@ export default function AnalyticsDashboard({ proxyAddress }: AnalyticsDashboardP
               </svg>
             </div>
           </div>
-          <p className="text-3xl font-bold text-foreground mb-1">{avgTicketPrice.toFixed(4)} ETH</p>
+          <p className="text-3xl font-bold text-foreground mb-1">{avgTicketPrice.toFixed(4)} USDT</p>
           <p className="text-sm text-foreground/60">Avg Ticket Price</p>
           <p className="text-xs text-foreground/40 mt-2">Per ticket</p>
         </div>
@@ -165,7 +165,7 @@ export default function AnalyticsDashboard({ proxyAddress }: AnalyticsDashboardP
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-foreground">{event.formattedRevenue} ETH</p>
+                      <p className="font-bold text-foreground">{event.formattedRevenue} USDT</p>
                       <p className="text-xs text-foreground/60">{event.ticketsSold} tickets</p>
                     </div>
                   </div>
@@ -350,7 +350,7 @@ export default function AnalyticsDashboard({ proxyAddress }: AnalyticsDashboardP
               </div>
             </div>
             <p className="text-xs text-foreground/60">
-              ETH earned per event on average
+              USDT earned per event on average
             </p>
           </div>
         </div>

@@ -222,7 +222,7 @@ export const ValidationRules = {
   },
   ticketPrice: {
     min: 0,
-    max: '1000', // ETH
+    max: '1000', // USDT
   },
   maxTickets: {
     min: 1,
@@ -230,10 +230,10 @@ export const ValidationRules = {
   },
   workerSalary: {
     min: 0,
-    max: '100', // ETH
+    max: '100', // USDT
   },
   sponsorshipAmount: {
-    min: '0.01', // ETH
-    max: '1000', // ETH
+    min: '0.01', // USDT
+    max: '1000', // USDT
   },
 } as const;

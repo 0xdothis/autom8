@@ -181,7 +181,7 @@ export default function EventDetails() {
                   <div>
                     <h3 className="text-sm font-medium text-gray-600 mb-1">Ticket Price</h3>
                     <p className="text-lg font-semibold">
-                      {isFreeEvent ? 'FREE' : `${formatEther(event.ticketPrice)} ETH`}
+                      {isFreeEvent ? 'FREE' : `${formatEther(event.ticketPrice)} USDT`}
                     </p>
                   </div>
                   <div>
@@ -225,7 +225,7 @@ export default function EventDetails() {
                       <ul className="list-disc list-inside space-y-1 text-gray-700">
                         <li>Event ID: #{eventId}</li>
                         <li>Organization: {formatAddress(proxyAddress as `0x${string}`)}</li>
-                        <li>Total Revenue: {formatEther(BigInt(event.ticketPrice) * BigInt(event.ticketsSold))} ETH</li>
+                        <li>Total Revenue: {formatEther(BigInt(event.ticketPrice) * BigInt(event.ticketsSold))} USDT</li>
                         <li>Event Type: {event.eventType === 0 ? 'Paid' : 'Free'}</li>
                       </ul>
                     </div>
@@ -278,7 +278,7 @@ export default function EventDetails() {
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-gray-600">Price per ticket</span>
                         <span className="text-2xl font-bold">
-                          {isFreeEvent ? 'FREE' : `${formatEther(event.ticketPrice)} ETH`}
+                          {isFreeEvent ? 'FREE' : `${formatEther(event.ticketPrice)} USDT`}
                         </span>
                       </div>
                       {!isFreeEvent && (
@@ -343,7 +343,7 @@ export default function EventDetails() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Total Revenue</span>
                       <span className="font-semibold">
-                        {formatEther(BigInt(event.ticketPrice) * BigInt(event.ticketsSold))} ETH
+                        {formatEther(BigInt(event.ticketPrice) * BigInt(event.ticketsSold))} USDT
                       </span>
                     </div>
                   </div>

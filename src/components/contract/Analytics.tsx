@@ -200,7 +200,7 @@ export default function Analytics({ proxyAddress, organizationName }: AnalyticsP
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-foreground/60">Total Revenue</p>
-              <p className="text-2xl font-bold text-success">{analytics.totalRevenue.toFixed(4)} ETH</p>
+              <p className="text-2xl font-bold text-success">{analytics.totalRevenue.toFixed(4)} USDT</p>
               <p className="text-xs text-foreground/50">Including sponsorship</p>
             </div>
             <div className="w-12 h-12 bg-success/20 rounded-full flex items-center justify-center">
@@ -216,7 +216,7 @@ export default function Analytics({ proxyAddress, organizationName }: AnalyticsP
             <div>
               <p className="text-sm text-foreground/60">Net Profit</p>
               <p className={`text-2xl font-bold ${analytics.totalProfit >= 0 ? 'text-success' : 'text-destructive'}`}>
-                {analytics.totalProfit.toFixed(4)} ETH
+                {analytics.totalProfit.toFixed(4)} USDT
               </p>
               <p className="text-xs text-foreground/50">After all expenses</p>
             </div>
@@ -298,11 +298,11 @@ export default function Analytics({ proxyAddress, organizationName }: AnalyticsP
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="text-center p-3 bg-muted/30 rounded-lg">
                 <p className="text-sm text-foreground/60">Avg Ticket Price</p>
-                <p className="font-semibold text-foreground">{analytics.averageTicketPrice.toFixed(4)} ETH</p>
+                <p className="font-semibold text-foreground">{analytics.averageTicketPrice.toFixed(4)} USDT</p>
               </div>
               <div className="text-center p-3 bg-muted/30 rounded-lg">
                 <p className="text-sm text-foreground/60">Total Sponsorship</p>
-                <p className="font-semibold text-primary">{analytics.totalSponsorship.toFixed(4)} ETH</p>
+                <p className="font-semibold text-primary">{analytics.totalSponsorship.toFixed(4)} USDT</p>
               </div>
             </div>
           </div>
@@ -367,9 +367,9 @@ export default function Analytics({ proxyAddress, organizationName }: AnalyticsP
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-success">{event.totalIncome.toFixed(4)} ETH</p>
+                  <p className="font-semibold text-success">{event.totalIncome.toFixed(4)} USDT</p>
                   <p className="text-sm text-foreground/60">
-                    Profit: {event.profit >= 0 ? '+' : ''}{event.profit.toFixed(4)} ETH
+                    Profit: {event.profit >= 0 ? '+' : ''}{event.profit.toFixed(4)} USDT
                   </p>
                 </div>
               </div>
@@ -424,7 +424,7 @@ export default function Analytics({ proxyAddress, organizationName }: AnalyticsP
                         }}
                       ></div>
                     </div>
-                    <span className="font-medium text-foreground w-16 text-right">{revenue.toFixed(2)} ETH</span>
+                    <span className="font-medium text-foreground w-16 text-right">{revenue.toFixed(2)} USDT</span>
                   </div>
                 </div>
               ))}
