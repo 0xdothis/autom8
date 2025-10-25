@@ -334,7 +334,7 @@ class ContractService {
       abi: IMPLEMENTATION_ABI,
       functionName: 'sponsorEvent',
       args: [eventId, amount],
-      value: amount, // Send ETH with the transaction
+      value: amount, // Send USDT with the transaction
     });
 
     return hash;

@@ -201,7 +201,7 @@ export default function LiveEventsCarousel() {
                                 <div className="text-2xl font-bold text-green-600">FREE</div>
                               ) : (
                                 <div className="text-2xl font-bold text-gray-900">
-                                  {formatEther(event.ticketPrice)} ETH
+                                  {formatEther(event.ticketPrice)} USDT
                                 </div>
                               )}
                             </div>

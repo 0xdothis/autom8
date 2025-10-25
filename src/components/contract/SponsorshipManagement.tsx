@@ -98,15 +98,15 @@ export default function SponsorshipManagement({
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <div className="text-center">
-            <p className="text-2xl font-bold text-primary">{totalSponsorship} ETH</p>
+            <p className="text-2xl font-bold text-primary">{totalSponsorship} USDT</p>
             <p className="text-sm text-foreground/70">Total Raised</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-foreground">{amountNeeded.toFixed(4)} ETH</p>
+            <p className="text-2xl font-bold text-foreground">{amountNeeded.toFixed(4)} USDT</p>
             <p className="text-sm text-foreground/70">Target Amount</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-warning">{remaining.toFixed(4)} ETH</p>
+            <p className="text-2xl font-bold text-warning">{remaining.toFixed(4)} USDT</p>
             <p className="text-sm text-foreground/70">Remaining</p>
           </div>
           <div className="text-center">
@@ -126,11 +126,11 @@ export default function SponsorshipManagement({
         </div>
         
         <div className="flex justify-between text-sm text-foreground/70">
-          <span>0 ETH</span>
+          <span>0 USDT</span>
           <span className={isFunded ? 'text-success font-medium' : ''}>
             {progressPercentage.toFixed(1)}% funded
           </span>
-          <span>{amountNeeded.toFixed(4)} ETH</span>
+          <span>{amountNeeded.toFixed(4)} USDT</span>
         </div>
 
         {isFunded && (
@@ -184,7 +184,7 @@ export default function SponsorshipManagement({
                   
                   <div className="text-right">
                     <p className="text-lg font-bold text-primary">
-                      {sponsor.formattedAmount} ETH
+                      {sponsor.formattedAmount} USDT
                     </p>
                     <p className="text-sm text-foreground/60">
                       {formatPercentage(sponsor.percentageContribution)}% contribution
@@ -257,7 +257,7 @@ export default function SponsorshipManagement({
                   placeholder="0.1"
                 />
                 <p className="text-xs text-foreground/60 mt-1">
-                  Minimum: 0.001 ETH • Remaining needed: {remaining.toFixed(4)} ETH
+                  Minimum: 0.001 USDT • Remaining needed: {remaining.toFixed(4)} USDT
                 </p>
               </div>
 
@@ -267,7 +267,7 @@ export default function SponsorshipManagement({
                   <div className="text-sm space-y-1">
                     <div className="flex justify-between">
                       <span>Amount:</span>
-                      <span className="font-medium">{sponsorAmount} ETH</span>
+                      <span className="font-medium">{sponsorAmount} USDT</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Percentage of target:</span>

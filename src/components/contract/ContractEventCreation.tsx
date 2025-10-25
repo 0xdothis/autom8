@@ -453,7 +453,7 @@ export default function ContractEventCreation() {
                   <strong>Type:</strong> {formData.eventType === LibStorage.EventType.Free ? 'Free' : 'Paid'}
                 </div>
                 <div>
-                  <strong>Price:</strong> {formData.eventType === LibStorage.EventType.Paid ? `${formData.ticketPrice} ETH` : 'Free'}
+                  <strong>Price:</strong> {formData.eventType === LibStorage.EventType.Paid ? `${formData.ticketPrice} USDT` : 'Free'}
                 </div>
                 <div>
                   <strong>Max Tickets:</strong> {formData.maxTickets}
@@ -468,7 +468,7 @@ export default function ContractEventCreation() {
                   <strong>Location:</strong> {formData.location}
                 </div>
                 <div>
-                  <strong>Budget:</strong> {formData.amountNeededForExpenses} ETH
+                  <strong>Budget:</strong> {formData.amountNeededForExpenses} USDT
                 </div>
               </div>
             </div>

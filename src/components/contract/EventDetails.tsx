@@ -111,7 +111,7 @@ export default function EventDetails({ proxyAddress, eventId }: EventDetailsProp
           </div>
           <div className="glass p-4 rounded-lg">
             <p className="text-sm text-foreground/60 mb-1">Revenue</p>
-            <p className="font-semibold text-foreground">{event.formattedRevenue} ETH</p>
+            <p className="font-semibold text-foreground">{event.formattedRevenue} USDT</p>
           </div>
           <div className="glass p-4 rounded-lg">
             <p className="text-sm text-foreground/60 mb-1">Tickets Sold</p>
@@ -155,7 +155,7 @@ export default function EventDetails({ proxyAddress, eventId }: EventDetailsProp
                 </div>
                 <div>
                   <p className="text-sm text-foreground/60 mb-1">Ticket Price</p>
-                  <p className="text-foreground">{event.formattedTicketPrice} ETH</p>
+                  <p className="text-foreground">{event.formattedTicketPrice} USDT</p>
                 </div>
                 <div>
                   <p className="text-sm text-foreground/60 mb-1">Start Time</p>

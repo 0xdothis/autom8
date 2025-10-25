@@ -89,7 +89,7 @@ export default function Sponsorships() {
     // This is simplified - actual calculation happens on-chain
     const sponsorshipAmount = Number.parseFloat(amount);
     const totalRevenue = Number(formatEther(BigInt(event.ticketPrice) * BigInt(event.ticketsSold)));
-    const estimatedReturn = (sponsorshipAmount / 100) * totalRevenue; // Simplified 1% return per ETH
+    const estimatedReturn = (sponsorshipAmount / 100) * totalRevenue; // Simplified 1% return per USDT
     
     return estimatedReturn.toFixed(4);
   };
@@ -166,7 +166,7 @@ export default function Sponsorships() {
         <Card>
           <CardBody>
             <h3 className="text-sm font-medium text-gray-600 mb-1">Total Sponsorship</h3>
-            <p className="text-3xl font-bold">{formatEther(totalSponsorship ?? BigInt(0))} ETH</p>
+            <p className="text-3xl font-bold">{formatEther(totalSponsorship ?? BigInt(0))} USDT</p>
           </CardBody>
         </Card>
         <Card>
@@ -258,10 +258,10 @@ export default function Sponsorships() {
                         )}
                       </td>
                       <td className="py-4 px-4 text-right font-semibold">
-                        {formatEther(sponsor.contribution)} ETH
+                        {formatEther(sponsor.contribution)} USDT
                       </td>
                       <td className="py-4 px-4 text-right text-green-600 font-semibold">
-                        {formatEther(sponsor.returnsReceived || BigInt(0))} ETH
+                        {formatEther(sponsor.returnsReceived || BigInt(0))} USDT
                       </td>
                       <td className="py-4 px-4 text-center">
                         <Badge variant={sponsor.returnsReceived > BigInt(0) ? 'success' : 'warning'}>
@@ -388,7 +388,7 @@ export default function Sponsorships() {
               <CardBody>
                 <h4 className="font-semibold mb-2">Estimated Returns</h4>
                 <p className="text-2xl font-bold text-blue-600">
-                  ~{calculateExpectedReturn(sponsorAmount)} ETH
+                  ~{calculateExpectedReturn(sponsorAmount)} USDT
                 </p>
                 <p className="text-xs text-gray-600 mt-2">
                   *Estimated based on current ticket sales. Actual returns may vary.

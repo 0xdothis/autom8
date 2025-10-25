@@ -254,13 +254,13 @@ export default function WorkerManagement() {
         <Card>
           <CardBody>
             <h3 className="text-sm font-medium text-gray-600 mb-1">Total Salaries</h3>
-            <p className="text-3xl font-bold">{formatEther(totalSalaries)} ETH</p>
+            <p className="text-3xl font-bold">{formatEther(totalSalaries)} USDT</p>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
             <h3 className="text-sm font-medium text-gray-600 mb-1">Total Paid</h3>
-            <p className="text-3xl font-bold text-green-600">{formatEther(totalPaid)} ETH</p>
+            <p className="text-3xl font-bold text-green-600">{formatEther(totalPaid)} USDT</p>
           </CardBody>
         </Card>
       </div>
@@ -334,10 +334,10 @@ export default function WorkerManagement() {
                       </td>
                       <td className="py-4 px-4">{worker.description}</td>
                       <td className="py-4 px-4 text-right font-semibold">
-                        {formatEther(worker.salary)} ETH
+                        {formatEther(worker.salary)} USDT
                       </td>
                       <td className="py-4 px-4 text-right text-green-600 font-semibold">
-                        {formatEther(worker.totalPaid)} ETH
+                        {formatEther(worker.totalPaid)} USDT
                       </td>
                       <td className="py-4 px-4 text-center">
                         <Badge variant={worker.isPaid ? 'success' : 'warning'}>
@@ -409,7 +409,7 @@ export default function WorkerManagement() {
             placeholder="0.5"
             value={workerSalary}
             onChange={(e) => setWorkerSalary(e.target.value)}
-            helperText="Payment amount in ETH"
+            helperText="Payment amount in USDT"
           />
 
           <div className="flex gap-3 pt-4">
@@ -457,7 +457,7 @@ export default function WorkerManagement() {
                   {formatAddress(selectedWorker.workerAddress as `0x${string}`)}
                 </code>
                 <p className="text-sm text-gray-600 mt-3">
-                  Current Salary: <span className="font-semibold">{formatEther(selectedWorker.salary)} ETH</span>
+                  Current Salary: <span className="font-semibold">{formatEther(selectedWorker.salary)} USDT</span>
                 </p>
               </CardBody>
             </Card>

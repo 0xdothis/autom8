@@ -242,7 +242,7 @@ export default function SponsorshipDashboard({ proxyAddress, eventId }: Sponsors
                       </div>
                       <div>
                         <h4 className="font-bold text-foreground">{tier.name}</h4>
-                        <p className="text-sm text-foreground/60">{tier.formattedAmount} ETH</p>
+                        <p className="text-sm text-foreground/60">{tier.formattedAmount} USDT</p>
                       </div>
                     </div>
                   </div>
@@ -312,7 +312,7 @@ export default function SponsorshipDashboard({ proxyAddress, eventId }: Sponsors
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-foreground">{sponsor.formattedAmount} ETH</p>
+                  <p className="font-semibold text-foreground">{sponsor.formattedAmount} USDT</p>
                   <p className="text-xs text-foreground/60">
                     {new Date(sponsor.timestamp * 1000).toLocaleDateString()}
                   </p>
@@ -468,7 +468,7 @@ export default function SponsorshipDashboard({ proxyAddress, eventId }: Sponsors
                 <div className="glass p-4 rounded-lg">
                   <p className="text-sm text-foreground/60 mb-1">Selected Tier</p>
                   <p className="font-semibold text-foreground">{selectedTier.name}</p>
-                  <p className="text-sm text-foreground/80 mt-1">{selectedTier.formattedAmount} ETH</p>
+                  <p className="text-sm text-foreground/80 mt-1">{selectedTier.formattedAmount} USDT</p>
                 </div>
               )}
 
