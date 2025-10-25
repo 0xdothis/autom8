@@ -41,11 +41,15 @@ function App() {
             <Router>
               <Routes>
                 <Route path="/" element={<Landing />} />
-                <Route path="/events" element={<EventsList />} />
-                <Route path="/events/:proxyAddress/:eventId" element={<EventDetails />} />
-                <Route path="/tickets" element={<MyTickets />} />
-                <Route path="/create-organization" element={<CreateOrganization />} />
                 
+                
+                <Route path="/create-organization" element={<CreateOrganization />} />
+
+               
+                  <Route path="/events" element={<EventsList />} />
+                  <Route path="/events/:proxyAddress/:eventId" element={<EventDetails />} />
+                  <Route path="/tickets" element={<MyTickets />} />
+            
                 {/* Dashboard Routes with Sidebar Layout */}
                 <Route path="/dashboard" element={<DashboardLayout />}>
                   <Route index element={<Dashboard />} />
