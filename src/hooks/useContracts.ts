@@ -3,11 +3,17 @@
  * These hooks provide a clean interface between React components and the contract service
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { useAccount, useWalletClient } from 'wagmi';
-import { contractService } from '../services/ContractService';
-import { LibStorage, Organization, EventAnalytics, CreateEventParams, CreateWorkerParams } from '../types/contracts';
-import type { Address } from 'viem';
+import { useState, useEffect, useCallback } from "react";
+import { useAccount, useWalletClient } from "wagmi";
+import { contractService } from "../services/ContractService";
+import {
+  LibStorage,
+  Organization,
+  EventAnalytics,
+  CreateEventParams,
+  CreateWorkerParams,
+} from "../types/contracts";
+import type { Address } from "viem";
 
 // ============================================================================
 // ORGANIZATION MANAGEMENT HOOKS
@@ -46,19 +52,25 @@ export function useOrganization() {
     setError(null);
 
     try {
-      const isRegistered = await contractService.isOrganizationRegistered(address);
-      
+      const isRegistered =
+        await contractService.isOrganizationRegistered(address);
+
       if (isRegistered) {
-        const proxyAddress = await contractService.getOrganizationProxy(address);
-        const events = await contractService.getOrganizationEvents(proxyAddress);
-        
+        const proxyAddress =
+          await contractService.getOrganizationProxy(address);
+        const events =
+          await contractService.getOrganizationEvents(proxyAddress);
+
         // Calculate organization stats
-        const totalRevenue = events.reduce((sum, event) => sum + event.totalRevenue, BigInt(0));
-        
+        const totalRevenue = events.reduce(
+          (sum, event) => sum + event.totalRevenue,
+          BigInt(0),
+        );
+
         const org: Organization = {
           proxyAddress,
           ownerAddress: address,
-          name: 'Organization', // This would come from off-chain data
+          name: "Organization", // This would come from off-chain data
           totalEvents: events.length,
           totalRevenue: contractService.formatEther(totalRevenue),
           totalWorkers: 0, // Would need to calculate from all events
@@ -69,42 +81,48 @@ export function useOrganization() {
         setOrganization(org);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load organization');
+      setError(
+        err instanceof Error ? err.message : "Failed to load organization",
+      );
     } finally {
       setLoading(false);
     }
   }, [address]);
 
-  const createOrganization = useCallback(async (orgName: string) => {
-    if (!address || !walletClient) {
-      throw new Error('Wallet not connected');
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const hash = await contractService.createOrganizationProxy(orgName);
-      
-      // Wait for transaction confirmation using the contract service's public client
-      const client = contractService.getPublicClient();
-      const receipt = await client.waitForTransactionReceipt({ hash });
-      
-      if (receipt.status === 'success') {
-        // Reload organization data
-        await loadOrganization();
-        return hash;
-      } else {
-        throw new Error('Transaction failed');
+  const createOrganization = useCallback(
+    async (orgName: string) => {
+      if (!address || !walletClient) {
+        throw new Error("Wallet not connected");
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create organization';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [address, walletClient, loadOrganization]);
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const hash = await contractService.createOrganizationProxy(orgName);
+
+        // Wait for transaction confirmation using the contract service's public client
+        const client = contractService.getPublicClient();
+        const receipt = await client.waitForTransactionReceipt({ hash });
+
+        if (receipt.status === "success") {
+          // Reload organization data
+          await loadOrganization();
+          return hash;
+        } else {
+          throw new Error("Transaction failed");
+        }
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to create organization";
+        setError(errorMessage);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [address, walletClient, loadOrganization],
+  );
 
   return {
     organization,
@@ -135,71 +153,95 @@ export function useEvents(proxyAddress?: string) {
     setError(null);
 
     try {
-      const rawEvents = await contractService.getOrganizationEvents(proxyAddress as Address);
-      
+      const rawEvents = await contractService.getOrganizationEvents(
+        proxyAddress as Address,
+      );
+
       // Transform raw events to display format
-      const displayEvents: LibStorage.EventDisplay[] = rawEvents.map(event => ({
-        ...event,
-        formattedPrice: contractService.formatEther(event.ticketPrice),
-        formattedRevenue: contractService.formatEther(event.totalRevenue),
-        formattedExpenses: contractService.formatEther(event.amountNeededForExpenses),
-        isActive: event.status === LibStorage.Status.Active,
-        isSoldOut: event.status === LibStorage.Status.SoldOut,
-        hasEnded: event.status === LibStorage.Status.Ended,
-        daysUntilStart: Math.ceil((Number(event.startTime) * 1000 - Date.now()) / (1000 * 60 * 60 * 24)),
-        totalWorkerCost: '0', // Will be calculated separately
-        totalSponsorship: '0', // Will be calculated separately
-        profitAfterExpenses: '0', // Will be calculated separately
-      }));
+      const displayEvents: LibStorage.EventDisplay[] = rawEvents.map(
+        (event) => ({
+          ...event,
+          formattedPrice: contractService.formatEther(event.ticketPrice),
+          formattedRevenue: contractService.formatEther(event.totalRevenue),
+          formattedExpenses: contractService.formatEther(
+            event.amountNeededForExpenses,
+          ),
+          isActive: event.status === LibStorage.Status.Active,
+          isSoldOut: event.status === LibStorage.Status.SoldOut,
+          hasEnded: event.status === LibStorage.Status.Ended,
+          daysUntilStart: Math.ceil(
+            (Number(event.startTime) * 1000 - Date.now()) /
+              (1000 * 60 * 60 * 24),
+          ),
+          totalWorkerCost: "0", // Will be calculated separately
+          totalSponsorship: "0", // Will be calculated separately
+          profitAfterExpenses: "0", // Will be calculated separately
+        }),
+      );
 
       setEvents(displayEvents);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load events');
+      setError(err instanceof Error ? err.message : "Failed to load events");
     } finally {
       setLoading(false);
     }
   }, [proxyAddress]);
 
-  const createEvent = useCallback(async (params: CreateEventParams) => {
-    if (!proxyAddress) throw new Error('No organization proxy found');
+  const createEvent = useCallback(
+    async (params: CreateEventParams) => {
+      if (!proxyAddress) throw new Error("No organization proxy found");
 
-    setLoading(true);
-    setError(null);
+      setLoading(true);
+      setError(null);
 
-    try {
-      const contractParams = {
-        name: params.name,
-        ticketPrice: contractService.parseEther(params.ticketPrice),
-        maxTickets: BigInt(params.maxTickets),
-        startTime: BigInt(Math.floor(params.startTime.getTime() / 1000)),
-        endTime: BigInt(Math.floor(params.endTime.getTime() / 1000)),
-        ticketUri: params.ticketUri,
-        eventType: params.eventType,
-        amountNeededForExpenses: contractService.parseEther(params.amountNeededForExpenses),
-      };
+      try {
+        const contractParams = {
+          name: params.name,
+          ticketPrice: contractService.parseEther(params.ticketPrice),
+          maxTickets: BigInt(params.maxTickets),
+          startTime: BigInt(Math.floor(params.startTime.getTime() / 1000)),
+          endTime: BigInt(Math.floor(params.endTime.getTime() / 1000)),
+          ticketUri: params.ticketUri,
+          eventType: params.eventType,
+          amountNeededForExpenses: contractService.parseEther(
+            params.amountNeededForExpenses,
+          ),
+        };
 
-      const hash = await contractService.createEvent(proxyAddress as Address, contractParams);
-      
-      // Reload events after creation
-      await loadEvents();
-      
+        const hash = await contractService.createEvent(
+          proxyAddress as Address,
+          contractParams,
+        );
+
+        // Reload events after creation
+        await loadEvents();
+
+        return hash;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to create event";
+        setError(errorMessage);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [proxyAddress, loadEvents],
+  );
+
+  const buyTicket = useCallback(
+    async (eventId: string) => {
+      if (!proxyAddress) throw new Error("No organization proxy found");
+
+      const hash = await contractService.buyTicket(
+        proxyAddress as Address,
+        BigInt(eventId),
+      );
+      await loadEvents(); // Refresh events after ticket purchase
       return hash;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create event';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [proxyAddress, loadEvents]);
-
-  const buyTicket = useCallback(async (eventId: string) => {
-    if (!proxyAddress) throw new Error('No organization proxy found');
-
-    const hash = await contractService.buyTicket(proxyAddress as Address, BigInt(eventId));
-    await loadEvents(); // Refresh events after ticket purchase
-    return hash;
-  }, [proxyAddress, loadEvents]);
+    },
+    [proxyAddress, loadEvents],
+  );
 
   return {
     events,
@@ -221,7 +263,7 @@ export function useEvents(proxyAddress?: string) {
  */
 export function useWorkers(proxyAddress?: string, eventId?: string) {
   const [workers, setWorkers] = useState<LibStorage.WorkerDisplay[]>([]);
-  const [totalCost, setTotalCost] = useState<string>('0');
+  const [totalCost, setTotalCost] = useState<string>("0");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -232,63 +274,80 @@ export function useWorkers(proxyAddress?: string, eventId?: string) {
     setError(null);
 
     try {
-      const rawWorkers = await contractService.getEventWorkers(proxyAddress as Address, BigInt(eventId));
-      const cost = await contractService.getTotalEventCost(proxyAddress as Address, BigInt(eventId));
+      const rawWorkers = await contractService.getEventWorkers(
+        proxyAddress as Address,
+        BigInt(eventId),
+      );
+      const cost = await contractService.getTotalEventCost(
+        proxyAddress as Address,
+        BigInt(eventId),
+      );
 
-      const displayWorkers: LibStorage.WorkerDisplay[] = rawWorkers.map(worker => ({
-        ...worker,
-        formattedSalary: contractService.formatEther(worker.salary),
-        statusBadge: worker.paid ? 'paid' : 'pending',
-      }));
+      const displayWorkers: LibStorage.WorkerDisplay[] = rawWorkers.map(
+        (worker) => ({
+          ...worker,
+          formattedSalary: contractService.formatEther(worker.salary),
+          statusBadge: worker.paid ? "paid" : "pending",
+        }),
+      );
 
       setWorkers(displayWorkers);
       setTotalCost(contractService.formatEther(cost));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load workers');
+      setError(err instanceof Error ? err.message : "Failed to load workers");
     } finally {
       setLoading(false);
     }
   }, [proxyAddress, eventId]);
 
-  const addWorker = useCallback(async (params: CreateWorkerParams) => {
-    if (!proxyAddress || !eventId) throw new Error('Missing proxy or event ID');
+  const addWorker = useCallback(
+    async (params: CreateWorkerParams) => {
+      if (!proxyAddress || !eventId)
+        throw new Error("Missing proxy or event ID");
 
-    setLoading(true);
-    setError(null);
+      setLoading(true);
+      setError(null);
 
-    try {
-      const hash = await contractService.addWorkerToPayroll(
+      try {
+        const hash = await contractService.addWorkerToPayroll(
+          proxyAddress as Address,
+          contractService.parseEther(params.salary),
+          params.description,
+          params.employeeAddress as Address,
+          BigInt(eventId),
+        );
+
+        await loadWorkers(); // Refresh after adding
+        return hash;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to add worker";
+        setError(errorMessage);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [proxyAddress, eventId, loadWorkers],
+  );
+
+  const updateWorkerSalary = useCallback(
+    async (workerAddress: string, newSalary: string) => {
+      if (!proxyAddress || !eventId)
+        throw new Error("Missing proxy or event ID");
+
+      const hash = await contractService.updateWorkerSalary(
         proxyAddress as Address,
-        contractService.parseEther(params.salary),
-        params.description,
-        params.employeeAddress as Address,
-        BigInt(eventId)
+        workerAddress as Address,
+        contractService.parseEther(newSalary),
+        BigInt(eventId),
       );
 
-      await loadWorkers(); // Refresh after adding
+      await loadWorkers(); // Refresh after update
       return hash;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to add worker';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [proxyAddress, eventId, loadWorkers]);
-
-  const updateWorkerSalary = useCallback(async (workerAddress: string, newSalary: string) => {
-    if (!proxyAddress || !eventId) throw new Error('Missing proxy or event ID');
-
-    const hash = await contractService.updateWorkerSalary(
-      proxyAddress as Address,
-      workerAddress as Address,
-      contractService.parseEther(newSalary),
-      BigInt(eventId)
-    );
-
-    await loadWorkers(); // Refresh after update
-    return hash;
-  }, [proxyAddress, eventId, loadWorkers]);
+    },
+    [proxyAddress, eventId, loadWorkers],
+  );
 
   return {
     workers,
@@ -311,7 +370,7 @@ export function useWorkers(proxyAddress?: string, eventId?: string) {
  */
 export function useSponsorship(proxyAddress?: string, eventId?: string) {
   const [sponsors, setSponsors] = useState<LibStorage.SponsorDisplay[]>([]);
-  const [totalSponsorship, setTotalSponsorship] = useState<string>('0');
+  const [totalSponsorship, setTotalSponsorship] = useState<string>("0");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -322,48 +381,63 @@ export function useSponsorship(proxyAddress?: string, eventId?: string) {
     setError(null);
 
     try {
-      const rawSponsors = await contractService.getAllSponsors(proxyAddress as Address, BigInt(eventId));
-      const total = await contractService.getTotalSponsorship(proxyAddress as Address, BigInt(eventId));
+      const rawSponsors = await contractService.getAllSponsors(
+        proxyAddress as Address,
+        BigInt(eventId),
+      );
+      const total = await contractService.getTotalSponsorship(
+        proxyAddress as Address,
+        BigInt(eventId),
+      );
 
-      const displaySponsors: LibStorage.SponsorDisplay[] = rawSponsors.map(sponsor => ({
-        ...sponsor,
-        formattedAmount: contractService.formatEther(sponsor.amount),
-        formattedPercentage: `${Number(sponsor.percentageContribution) / 100}%`,
-        expectedReturn: '0', // Would be calculated based on revenue sharing
-      }));
+      const displaySponsors: LibStorage.SponsorDisplay[] = rawSponsors.map(
+        (sponsor) => ({
+          ...sponsor,
+          formattedAmount: contractService.formatEther(sponsor.amount),
+          formattedPercentage: `${Number(sponsor.percentageContribution) / 100}%`,
+          expectedReturn: "0", // Would be calculated based on revenue sharing
+        }),
+      );
 
       setSponsors(displaySponsors);
       setTotalSponsorship(contractService.formatEther(total));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load sponsorship data');
+      setError(
+        err instanceof Error ? err.message : "Failed to load sponsorship data",
+      );
     } finally {
       setLoading(false);
     }
   }, [proxyAddress, eventId]);
 
-  const sponsorEvent = useCallback(async (amount: string) => {
-    if (!proxyAddress || !eventId) throw new Error('Missing proxy or event ID');
+  const sponsorEvent = useCallback(
+    async (amount: string) => {
+      if (!proxyAddress || !eventId)
+        throw new Error("Missing proxy or event ID");
 
-    setLoading(true);
-    setError(null);
+      setLoading(true);
+      setError(null);
 
-    try {
-      const hash = await contractService.sponsorEvent(
-        proxyAddress as Address,
-        BigInt(eventId),
-        contractService.parseEther(amount)
-      );
+      try {
+        const hash = await contractService.sponsorEvent(
+          proxyAddress as Address,
+          BigInt(eventId),
+          contractService.parseEther(amount),
+        );
 
-      await loadSponsorship(); // Refresh after sponsoring
-      return hash;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to sponsor event';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [proxyAddress, eventId, loadSponsorship]);
+        await loadSponsorship(); // Refresh after sponsoring
+        return hash;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to sponsor event";
+        setError(errorMessage);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [proxyAddress, eventId, loadSponsorship],
+  );
 
   return {
     sponsors,
@@ -388,16 +462,19 @@ export function usePayments(proxyAddress?: string) {
   const [error, setError] = useState<string | null>(null);
 
   const processPayments = useCallback(async () => {
-    if (!proxyAddress) throw new Error('No organization proxy found');
+    if (!proxyAddress) throw new Error("No organization proxy found");
 
     setLoading(true);
     setError(null);
 
     try {
-      const hash = await contractService.processPayments(proxyAddress as Address);
+      const hash = await contractService.processPayments(
+        proxyAddress as Address,
+      );
       return hash;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to process payments';
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to process payments";
       setError(errorMessage);
       throw err;
     } finally {
@@ -432,14 +509,32 @@ export function useEventAnalytics(proxyAddress?: string, eventId?: string) {
 
     try {
       const [workers, sponsors, ticketsSold, revenue] = await Promise.all([
-        contractService.getEventWorkers(proxyAddress as Address, BigInt(eventId)),
-        contractService.getAllSponsors(proxyAddress as Address, BigInt(eventId)),
-        contractService.getTicketSales(proxyAddress as Address, BigInt(eventId)),
-        contractService.getEventRevenue(proxyAddress as Address, BigInt(eventId)),
+        contractService.getEventWorkers(
+          proxyAddress as Address,
+          BigInt(eventId),
+        ),
+        contractService.getAllSponsors(
+          proxyAddress as Address,
+          BigInt(eventId),
+        ),
+        contractService.getTicketSales(
+          proxyAddress as Address,
+          BigInt(eventId),
+        ),
+        contractService.getEventRevenue(
+          proxyAddress as Address,
+          BigInt(eventId),
+        ),
       ]);
 
-      const totalExpenses = workers.reduce((sum, worker) => sum + worker.salary, BigInt(0));
-      const totalSponsorship = sponsors.reduce((sum, sponsor) => sum + sponsor.amount, BigInt(0));
+      const totalExpenses = workers.reduce(
+        (sum, worker) => sum + worker.salary,
+        BigInt(0),
+      );
+      const totalSponsorship = sponsors.reduce(
+        (sum, sponsor) => sum + sponsor.amount,
+        BigInt(0),
+      );
       const netProfit = revenue + totalSponsorship - totalExpenses;
 
       const analyticsData: EventAnalytics = {
@@ -449,15 +544,16 @@ export function useEventAnalytics(proxyAddress?: string, eventId?: string) {
         totalExpenses: contractService.formatEther(totalExpenses),
         totalSponsorship: contractService.formatEther(totalSponsorship),
         netProfit: contractService.formatEther(netProfit),
-        workersPaid: workers.filter(w => w.paid).length,
+        workersPaid: workers.filter((w) => w.paid).length,
         totalWorkers: workers.length,
         sponsorCount: sponsors.length,
-        profitMargin: revenue > 0 ? Number(netProfit * BigInt(100) / revenue) : 0,
+        profitMargin:
+          revenue > 0 ? Number((netProfit * BigInt(100)) / revenue) : 0,
       };
 
       setAnalytics(analyticsData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load analytics');
+      setError(err instanceof Error ? err.message : "Failed to load analytics");
     } finally {
       setLoading(false);
     }
@@ -471,3 +567,4 @@ export function useEventAnalytics(proxyAddress?: string, eventId?: string) {
     refetch: loadAnalytics,
   };
 }
+
