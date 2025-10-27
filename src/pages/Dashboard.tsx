@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { Card, CardHeader, CardTitle, CardBody, Button, Badge, Skeleton } from '@/components/ui';
 import { useFactory, useEvents } from '@/hooks';
 import { formatAddress } from '@/lib/utils';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const { address, isConnected } = useAccount();
   const { userOrganizations, isLoadingOrgs } = useFactory();
   const [selectedOrg, setSelectedOrg] = useState<`0x${string}` | undefined>();
@@ -79,7 +80,14 @@ export default function Dashboard() {
   return (
     <>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-4xl font-bold">Dashboard</h1>
+        <div className="flex items-center">
+          <button onClick={() => navigate('/')} className="mr-4 p-2 rounded-full hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+          </button>
+          <h1 className="text-4xl font-bold">Dashboard</h1>
+        </div>
         <Link to="/dashboard/events/create">
           <Button variant="primary">Create Event</Button>
         </Link>
