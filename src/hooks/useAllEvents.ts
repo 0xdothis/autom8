@@ -14,7 +14,7 @@ export function useAllEvents(eventsAddress?: `0x${string}`) {
   // Read: Get all events from all globalEventManager
   const {
     data: events,
-    isLoading: isLoadingEvents,
+    isLoading,
     refetch: refetchEvents,
   } = useReadContract({
     address: contractAddress,
@@ -27,9 +27,9 @@ export function useAllEvents(eventsAddress?: `0x${string}`) {
 
   return {
     // Read functions
-    events: (events as any[]) || [],
+    data: (events as any[]) || [],
     eventCount: events ? (events as any[]).length : 0,
-    isLoadingEvents,
+    isLoading,
     refetchEvents,
 
     // Contract info
