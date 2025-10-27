@@ -135,13 +135,16 @@ export default function MyTickets() {
     <div className="min-h-screen bg-white">
       <Header/>
       <div className="container-custom py-12">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex items-center mb-8">
+          <button onClick={() => navigate('/dashboard')} className="mr-4 p-2 rounded-full hover:bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </button>
           <div>
-            
             <h1 className="text-4xl font-bold mb-2">My Tickets</h1>
             <p className="text-gray-600">Your NFT event tickets collection</p>
           </div>
-          
         </div>
 
         {/* Filter Tabs */}
@@ -237,7 +240,7 @@ export default function MyTickets() {
                         <span className="font-medium">
                           {ticket.ticketPrice === BigInt(0)
                             ? 'FREE'
-                            : `${formatEther(ticket.ticketPrice)} ETH`}
+                            : `${formatEther(ticket.ticketPrice)} USDT`}
                         </span>
                       </div>
                       <div className="flex justify-between">
