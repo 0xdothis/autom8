@@ -36,7 +36,7 @@ export function Footer() {
               <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">E</span>
               </div>
-              <span className="text-xl font-bold">EventChain</span>
+              <span className="text-xl font-bold">Evenntz</span>
             </div>
             <p className="text-sm text-gray-600 mb-4">
               Blockchain-powered event management platform. Create events, sell NFT tickets, and manage everything on-chain.
@@ -119,7 +119,7 @@ export function Footer() {
         <div className="pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} EventChain. All rights reserved.
+              © {new Date().getFullYear()} Evenntz. All rights reserved.
             </p>
             <div className="flex items-center space-x-4">
               <a
